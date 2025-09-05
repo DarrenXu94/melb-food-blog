@@ -1,0 +1,450 @@
+---
+import Layout from "../layouts/Layout.astro";
+import ReviewCard from "../components/ReviewCard.astro";
+import FilterSection from "../components/FilterSection.astro";
+
+// Get query parameters
+const url = new URL(Astro.request.url);
+const query = url.searchParams.get("q") || "";
+const cuisine = url.searchParams.get("cuisine") || "";
+const location = url.searchParams.get("location") || "";
+const price = url.searchParams.get("price") || "";
+
+// Mock data - in production this would come from your API
+const allReviews = [
+  {
+    title: "Attica",
+    rating: 5,
+    cuisine: "Modern Australian",
+    location: "Ripponlea",
+    price: "$$$$",
+    image:
+      "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=400&h=300&fit=crop",
+    href: "/reviews/attica",
+  },
+  {
+    title: "Chin Chin",
+    rating: 4.5,
+    cuisine: "Thai",
+    location: "CBD",
+    price: "$$",
+    image:
+      "https://images.unsplash.com/photo-1551218808-94e220e084d2?w=400&h=300&fit=crop",
+    href: "/reviews/chin-chin",
+  },
+  {
+    title: "Pellegrini's Espresso Bar",
+    rating: 4.8,
+    cuisine: "Italian",
+    location: "CBD",
+    price: "$",
+    image:
+      "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=400&h=300&fit=crop",
+    href: "/reviews/pellegrinis",
+  },
+  {
+    title: "Flower Drum",
+    rating: 4.2,
+    cuisine: "Chinese",
+    location: "CBD",
+    price: "$$$",
+    href: "/reviews/flower-drum",
+  },
+  {
+    title: "Cumulus Inc.",
+    rating: 4.6,
+    cuisine: "Modern Australian",
+    location: "CBD",
+    price: "$$$",
+    href: "/reviews/cumulus-inc",
+  },
+  {
+    title: "Maha",
+    rating: 4.4,
+    cuisine: "Middle Eastern",
+    location: "CBD",
+    price: "$$$",
+    href: "/reviews/maha",
+  },
+  {
+    title: "Supernormal",
+    rating: 4.3,
+    cuisine: "Asian Fusion",
+    location: "CBD",
+    price: "$$",
+    href: "/reviews/supernormal",
+  },
+  {
+    title: "Cutler & Co",
+    rating: 4.7,
+    cuisine: "Modern Australian",
+    location: "Fitzroy",
+    price: "$$$",
+    href: "/reviews/cutler-co",
+  },
+  {
+    title: "D.O.C Pizza",
+    rating: 4.1,
+    cuisine: "Italian",
+    location: "Carlton",
+    price: "$$",
+    href: "/reviews/doc-pizza",
+  },
+  {
+    title: "Nobu Melbourne",
+    rating: 4.3,
+    cuisine: "Japanese",
+    location: "Southbank",
+    price: "$$$$",
+    href: "/reviews/nobu-melbourne",
+  },
+  {
+    title: "Spice Temple",
+    rating: 4.0,
+    cuisine: "Chinese",
+    location: "CBD",
+    price: "$$$",
+    href: "/reviews/spice-temple",
+  },
+  {
+    title: "Movida",
+    rating: 4.5,
+    cuisine: "Spanish",
+    location: "CBD",
+    price: "$$$",
+    href: "/reviews/movida",
+  },
+  {
+    title: "Grossi Florentino",
+    rating: 4.6,
+    cuisine: "Italian",
+    location: "CBD",
+    price: "$$$$",
+    href: "/reviews/grossi-florentino",
+  },
+  {
+    title: "Rockpool Bar & Grill",
+    rating: 4.4,
+    cuisine: "Modern Australian",
+    location: "CBD",
+    price: "$$$$",
+    href: "/reviews/rockpool-bar-grill",
+  },
+  {
+    title: "Longrain",
+    rating: 4.2,
+    cuisine: "Thai",
+    location: "CBD",
+    price: "$$$",
+    href: "/reviews/longrain",
+  },
+];
+
+// Filter reviews based on search criteria
+let filteredReviews = allReviews;
+
+// Text search in title and cuisine
+if (query) {
+  filteredReviews = filteredReviews.filter(
+    (review) =>
+      review.title.toLowerCase().includes(query.toLowerCase()) ||
+      review.cuisine.toLowerCase().includes(query.toLowerCase()) ||
+      review.location.toLowerCase().includes(query.toLowerCase())
+  );
+}
+
+// Filter by cuisine
+if (cuisine) {
+  filteredReviews = filteredReviews.filter((review) =>
+    review.cuisine.toLowerCase().includes(cuisine.toLowerCase())
+  );
+}
+
+// Filter by location
+if (location) {
+  filteredReviews = filteredReviews.filter((review) =>
+    review.location.toLowerCase().includes(location.toLowerCase())
+  );
+}
+
+// Filter by price
+if (price) {
+  filteredReviews = filteredReviews.filter((review) => review.price === price);
+}
+
+// Sort by rating (highest first)
+filteredReviews.sort((a, b) => b.rating - a.rating);
+
+const hasSearchCriteria = query || cuisine || location || price;
+---
+
+<Layout title="Search Restaurants - Melbourne Food Blog">
+  <div class="page-header">
+    <div class="container">
+      <h1 class="page-title">Search Restaurants</h1>
+      <p class="page-subtitle">
+        Find the perfect restaurant for your next meal
+      </p>
+    </div>
+  </div>
+
+  <div class="page-content">
+    <div class="container">
+      <!-- Search Form -->
+      <section class="search-section">
+        <form method="GET" class="search-form">
+          <div class="search-form__main">
+            <div class="search-input-group">
+              <input
+                type="search"
+                name="q"
+                value={query}
+                placeholder="Search by restaurant name, cuisine, or location..."
+                class="form-input search-input"
+                aria-label="Search restaurants"
+              />
+              <button type="submit" class="btn btn--primary search-btn"
+                >Search</button
+              >
+            </div>
+          </div>
+
+          <div class="search-form__filters">
+            <FilterSection
+              cuisine={cuisine}
+              location={location}
+              price={price}
+            />
+          </div>
+        </form>
+      </section>
+
+      <!-- Search Results -->
+      <section class="results-section">
+        <div class="results-header">
+          <h2 class="results-title">
+            {
+              hasSearchCriteria ? (
+                <>
+                  {filteredReviews.length}{" "}
+                  {filteredReviews.length === 1 ? "Result" : "Results"} Found
+                  {query && <span class="search-query"> for "{query}"</span>}
+                </>
+              ) : (
+                "All Restaurants"
+              )
+            }
+          </h2>
+
+          {
+            filteredReviews.length === 0 && hasSearchCriteria && (
+              <div class="no-results">
+                <p>
+                  No restaurants match your search criteria. Try adjusting your
+                  search terms or filters.
+                </p>
+                <a href="/search" class="btn btn--outline">
+                  Clear Search
+                </a>
+              </div>
+            )
+          }
+        </div>
+
+        {
+          filteredReviews.length > 0 && (
+            <div class="grid grid--3-cols">
+              {filteredReviews.map((review) => (
+                <ReviewCard {...review} size="medium" />
+              ))}
+            </div>
+          )
+        }
+
+        {
+          !hasSearchCriteria && (
+            <div class="search-suggestions">
+              <h3 class="suggestions-title">Popular Searches</h3>
+              <div class="suggestions-grid">
+                <a href="/search?q=italian" class="suggestion-tag">
+                  Italian
+                </a>
+                <a href="/search?q=chinese" class="suggestion-tag">
+                  Chinese
+                </a>
+                <a href="/search?q=japanese" class="suggestion-tag">
+                  Japanese
+                </a>
+                <a href="/search?q=thai" class="suggestion-tag">
+                  Thai
+                </a>
+                <a href="/search?q=cbd" class="suggestion-tag">
+                  CBD
+                </a>
+                <a href="/search?q=fitzroy" class="suggestion-tag">
+                  Fitzroy
+                </a>
+                <a href="/search?q=budget" class="suggestion-tag">
+                  Budget Friendly
+                </a>
+                <a href="/search?q=fine dining" class="suggestion-tag">
+                  Fine Dining
+                </a>
+              </div>
+            </div>
+          )
+        }
+      </section>
+    </div>
+  </div>
+</Layout>
+
+<style>
+  .page-header {
+    background-color: var(--color-gray-50);
+    padding: var(--spacing-12) 0;
+    border-bottom: 1px solid var(--color-gray-200);
+  }
+
+  .page-title {
+    font-size: var(--font-size-4xl);
+    font-weight: var(--font-weight-bold);
+    margin-bottom: var(--spacing-4);
+    text-align: center;
+  }
+
+  .page-subtitle {
+    font-size: var(--font-size-lg);
+    color: var(--color-gray-600);
+    text-align: center;
+    margin: 0;
+  }
+
+  .page-content {
+    padding: var(--spacing-8) 0;
+  }
+
+  .search-section {
+    margin-bottom: var(--spacing-12);
+  }
+
+  .search-form {
+    background-color: var(--color-white);
+    border: 1px solid var(--color-gray-200);
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-8);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .search-form__main {
+    margin-bottom: var(--spacing-6);
+  }
+
+  .search-input-group {
+    display: flex;
+    gap: var(--spacing-4);
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .search-input {
+    flex: 1;
+    font-size: var(--font-size-lg);
+    padding: var(--spacing-4) var(--spacing-6);
+  }
+
+  .search-btn {
+    font-size: var(--font-size-lg);
+    padding: var(--spacing-4) var(--spacing-8);
+    white-space: nowrap;
+  }
+
+  .search-form__filters {
+    border-top: 1px solid var(--color-gray-200);
+    padding-top: var(--spacing-6);
+  }
+
+  .results-section {
+    margin-bottom: var(--spacing-12);
+  }
+
+  .results-header {
+    margin-bottom: var(--spacing-8);
+    text-align: center;
+  }
+
+  .results-title {
+    font-size: var(--font-size-2xl);
+    font-weight: var(--font-weight-semibold);
+    margin-bottom: var(--spacing-4);
+  }
+
+  .search-query {
+    color: var(--color-primary);
+    font-weight: var(--font-weight-normal);
+  }
+
+  .no-results {
+    background-color: var(--color-gray-50);
+    border: 1px solid var(--color-gray-200);
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-8);
+    text-align: center;
+  }
+
+  .no-results p {
+    font-size: var(--font-size-lg);
+    color: var(--color-gray-600);
+    margin-bottom: var(--spacing-6);
+  }
+
+  .search-suggestions {
+    background-color: var(--color-gray-50);
+    border: 1px solid var(--color-gray-200);
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-8);
+    text-align: center;
+  }
+
+  .suggestions-title {
+    font-size: var(--font-size-xl);
+    font-weight: var(--font-weight-semibold);
+    margin-bottom: var(--spacing-6);
+    color: var(--color-gray-900);
+  }
+
+  .suggestions-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-3);
+    justify-content: center;
+  }
+
+  .suggestion-tag {
+    background-color: var(--color-white);
+    color: var(--color-primary);
+    padding: var(--spacing-2) var(--spacing-4);
+    border-radius: var(--radius-full);
+    text-decoration: none;
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-medium);
+    border: 1px solid var(--color-primary);
+    transition: all var(--transition-fast);
+  }
+
+  .suggestion-tag:hover {
+    background-color: var(--color-primary);
+    color: var(--color-white);
+    text-decoration: none;
+  }
+
+  @media (max-width: 640px) {
+    .search-input-group {
+      flex-direction: column;
+    }
+
+    .search-btn {
+      width: 100%;
+    }
+  }
+</style>

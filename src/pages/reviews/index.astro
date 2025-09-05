@@ -1,0 +1,241 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import ReviewCard from "../../components/ReviewCard.astro";
+import FilterSection from "../../components/FilterSection.astro";
+
+// Get query parameters
+const url = new URL(Astro.request.url);
+const cuisine = url.searchParams.get("cuisine") || "";
+const location = url.searchParams.get("location") || "";
+const price = url.searchParams.get("price") || "";
+
+// Mock data - in production this would come from your API
+const allReviews = [
+  {
+    title: "Attica",
+    rating: 5,
+    cuisine: "Modern Australian",
+    location: "Ripponlea",
+    price: "$$$$",
+    image:
+      "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=400&h=300&fit=crop",
+    href: "/reviews/attica",
+  },
+  {
+    title: "Chin Chin",
+    rating: 4.5,
+    cuisine: "Thai",
+    location: "CBD",
+    price: "$$",
+    image:
+      "https://images.unsplash.com/photo-1551218808-94e220e084d2?w=400&h=300&fit=crop",
+    href: "/reviews/chin-chin",
+  },
+  {
+    title: "Pellegrini's Espresso Bar",
+    rating: 4.8,
+    cuisine: "Italian",
+    location: "CBD",
+    price: "$",
+    image:
+      "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=400&h=300&fit=crop",
+    href: "/reviews/pellegrinis",
+  },
+  {
+    title: "Flower Drum",
+    rating: 4.2,
+    cuisine: "Chinese",
+    location: "CBD",
+    price: "$$$",
+    href: "/reviews/flower-drum",
+  },
+  {
+    title: "Cumulus Inc.",
+    rating: 4.6,
+    cuisine: "Modern Australian",
+    location: "CBD",
+    price: "$$$",
+    href: "/reviews/cumulus-inc",
+  },
+  {
+    title: "Maha",
+    rating: 4.4,
+    cuisine: "Middle Eastern",
+    location: "CBD",
+    price: "$$$",
+    href: "/reviews/maha",
+  },
+  {
+    title: "Supernormal",
+    rating: 4.3,
+    cuisine: "Asian Fusion",
+    location: "CBD",
+    price: "$$",
+    href: "/reviews/supernormal",
+  },
+  {
+    title: "Cutler & Co",
+    rating: 4.7,
+    cuisine: "Modern Australian",
+    location: "Fitzroy",
+    price: "$$$",
+    href: "/reviews/cutler-co",
+  },
+  {
+    title: "D.O.C Pizza",
+    rating: 4.1,
+    cuisine: "Italian",
+    location: "Carlton",
+    price: "$$",
+    href: "/reviews/doc-pizza",
+  },
+  {
+    title: "Nobu Melbourne",
+    rating: 4.3,
+    cuisine: "Japanese",
+    location: "Southbank",
+    price: "$$$$",
+    href: "/reviews/nobu-melbourne",
+  },
+  {
+    title: "Spice Temple",
+    rating: 4.0,
+    cuisine: "Chinese",
+    location: "CBD",
+    price: "$$$",
+    href: "/reviews/spice-temple",
+  },
+  {
+    title: "Movida",
+    rating: 4.5,
+    cuisine: "Spanish",
+    location: "CBD",
+    price: "$$$",
+    href: "/reviews/movida",
+  },
+];
+
+// Filter reviews based on query parameters
+let filteredReviews = allReviews;
+
+if (cuisine) {
+  filteredReviews = filteredReviews.filter((review) =>
+    review.cuisine.toLowerCase().includes(cuisine.toLowerCase())
+  );
+}
+
+if (location) {
+  filteredReviews = filteredReviews.filter((review) =>
+    review.location.toLowerCase().includes(location.toLowerCase())
+  );
+}
+
+if (price) {
+  filteredReviews = filteredReviews.filter((review) => review.price === price);
+}
+
+// Sort by rating (highest first)
+filteredReviews.sort((a, b) => b.rating - a.rating);
+---
+
+<Layout title="Restaurant Reviews - Melbourne Food Blog">
+  <div class="page-header">
+    <div class="container">
+      <h1 class="page-title">Restaurant Reviews</h1>
+      <p class="page-subtitle">
+        Discover Melbourne's finest dining experiences
+      </p>
+    </div>
+  </div>
+
+  <div class="page-content">
+    <div class="container">
+      <div class="grid grid--sidebar">
+        <!-- Filters Sidebar -->
+        <aside class="filters-sidebar">
+          <FilterSection cuisine={cuisine} location={location} price={price} />
+        </aside>
+
+        <!-- Reviews Grid -->
+        <main class="reviews-main">
+          <div class="reviews-header">
+            <h2 class="reviews-title">
+              {filteredReviews.length}
+              {filteredReviews.length === 1 ? "Review" : "Reviews"} Found
+            </h2>
+            {
+              filteredReviews.length === 0 && (
+                <p class="no-results">
+                  No reviews match your current filters. Try adjusting your
+                  search criteria.
+                </p>
+              )
+            }
+          </div>
+
+          <div class="grid grid--3-cols">
+            {
+              filteredReviews.map((review) => (
+                <ReviewCard {...review} size="medium" />
+              ))
+            }
+          </div>
+        </main>
+      </div>
+    </div>
+  </div>
+</Layout>
+
+<style>
+  .page-header {
+    background-color: var(--color-gray-50);
+    padding: var(--spacing-12) 0;
+    border-bottom: 1px solid var(--color-gray-200);
+  }
+
+  .page-title {
+    font-size: var(--font-size-4xl);
+    font-weight: var(--font-weight-bold);
+    margin-bottom: var(--spacing-4);
+    text-align: center;
+  }
+
+  .page-subtitle {
+    font-size: var(--font-size-lg);
+    color: var(--color-gray-600);
+    text-align: center;
+    margin: 0;
+  }
+
+  .page-content {
+    padding: var(--spacing-8) 0;
+  }
+
+  .filters-sidebar {
+    @media (max-width: 1023px) {
+      order: 2;
+    }
+  }
+
+  .reviews-main {
+    @media (max-width: 1023px) {
+      order: 1;
+    }
+  }
+
+  .reviews-header {
+    margin-bottom: var(--spacing-8);
+  }
+
+  .reviews-title {
+    font-size: var(--font-size-2xl);
+    font-weight: var(--font-weight-semibold);
+    margin-bottom: var(--spacing-4);
+  }
+
+  .no-results {
+    color: var(--color-gray-600);
+    font-style: italic;
+    margin: 0;
+  }
+</style>

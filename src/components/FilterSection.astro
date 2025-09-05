@@ -1,0 +1,134 @@
+---
+export interface Props {
+  cuisine?: string;
+  location?: string;
+  price?: string;
+  onFilterChange?: string;
+}
+
+const { cuisine, location, price, onFilterChange } = Astro.props;
+---
+
+<div class="filter-section">
+  <h3 class="filter-section__title">Filter Reviews</h3>
+
+  <form method="GET" class="filter-form">
+    <div class="filter-form__grid">
+      <div class="form-group">
+        <label for="cuisine" class="form-label">Cuisine</label>
+        <select name="cuisine" id="cuisine" class="form-select">
+          <option value="">All Cuisines</option>
+          <option value="italian" selected={cuisine === "italian"}
+            >Italian</option
+          >
+          <option value="chinese" selected={cuisine === "chinese"}
+            >Chinese</option
+          >
+          <option value="japanese" selected={cuisine === "japanese"}
+            >Japanese</option
+          >
+          <option value="thai" selected={cuisine === "thai"}>Thai</option>
+          <option value="indian" selected={cuisine === "indian"}>Indian</option>
+          <option value="mexican" selected={cuisine === "mexican"}
+            >Mexican</option
+          >
+          <option value="french" selected={cuisine === "french"}>French</option>
+          <option value="australian" selected={cuisine === "australian"}
+            >Australian</option
+          >
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="location" class="form-label">Location</label>
+        <select name="location" id="location" class="form-select">
+          <option value="">All Locations</option>
+          <option value="cbd" selected={location === "cbd"}>CBD</option>
+          <option value="fitzroy" selected={location === "fitzroy"}
+            >Fitzroy</option
+          >
+          <option value="carlton" selected={location === "carlton"}
+            >Carlton</option
+          >
+          <option value="southbank" selected={location === "southbank"}
+            >Southbank</option
+          >
+          <option value="richmond" selected={location === "richmond"}
+            >Richmond</option
+          >
+          <option value="south-yarra" selected={location === "south-yarra"}
+            >South Yarra</option
+          >
+          <option value="st-kilda" selected={location === "st-kilda"}
+            >St Kilda</option
+          >
+          <option value="collingwood" selected={location === "collingwood"}
+            >Collingwood</option
+          >
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="price" class="form-label">Price Range</label>
+        <select name="price" id="price" class="form-select">
+          <option value="">All Prices</option>
+          <option value="$" selected={price === "$"}>$ (Budget)</option>
+          <option value="$$" selected={price === "$$"}>$$ (Moderate)</option>
+          <option value="$$$" selected={price === "$$$"}>$$$ (Expensive)</option
+          >
+          <option value="$$$$" selected={price === "$$$$"}
+            >$$$$ (Very Expensive)</option
+          >
+        </select>
+      </div>
+    </div>
+
+    <div class="filter-form__actions">
+      <button type="submit" class="btn btn--primary">Apply Filters</button>
+      <a href="?" class="btn btn--outline">Clear Filters</a>
+    </div>
+  </form>
+</div>
+
+<style>
+  .filter-section {
+    background-color: var(--color-white);
+    border: 1px solid var(--color-gray-200);
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-6);
+    margin-bottom: var(--spacing-8);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .filter-section__title {
+    margin: 0 0 var(--spacing-6) 0;
+    font-size: var(--font-size-xl);
+    color: var(--color-gray-900);
+  }
+
+  .filter-form__grid {
+    display: grid;
+    gap: var(--spacing-4);
+    margin-bottom: var(--spacing-6);
+
+    @media (min-width: 640px) {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  .filter-form__actions {
+    display: flex;
+    gap: var(--spacing-4);
+    flex-wrap: wrap;
+  }
+
+  @media (max-width: 640px) {
+    .filter-form__actions {
+      flex-direction: column;
+    }
+
+    .filter-form__actions .btn {
+      width: 100%;
+    }
+  }
+</style>

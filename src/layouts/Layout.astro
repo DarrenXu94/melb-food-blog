@@ -1,22 +1,70 @@
+---
+export interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = "Melbourne Food Blog",
+  description = "Discover the best restaurants and food experiences in Melbourne",
+} = Astro.props;
+---
+
 <!doctype html>
 <html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro Basics</title>
-	</head>
-	<body>
-		<slot />
-	</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+    <meta name="description" content={description} />
+    <title>{title}</title>
+  </head>
+  <body>
+    <nav class="nav">
+      <div class="container nav__container">
+        <a href="/" class="nav__brand">🍽️ Melb Food</a>
+
+        <div class="nav__search">
+          <form action="/search" method="GET" class="flex flex--gap-2">
+            <input
+              type="search"
+              name="q"
+              placeholder="Search restaurants..."
+              class="form-input"
+              aria-label="Search restaurants"
+            />
+            <button type="submit" class="btn btn--primary btn--sm"
+              >Search</button
+            >
+          </form>
+        </div>
+
+        <ul class="nav__links">
+          <li><a href="/" class="nav__link">Home</a></li>
+          <li><a href="/reviews" class="nav__link">Reviews</a></li>
+          <li><a href="/category" class="nav__link">Categories</a></li>
+        </ul>
+      </div>
+    </nav>
+
+    <main>
+      <slot />
+    </main>
+
+    <footer
+      style="background-color: var(--color-gray-100); padding: var(--spacing-8) 0; margin-top: var(--spacing-16);"
+    >
+      <div class="container text-center">
+        <p class="text-gray-600">
+          &copy; 2025 Melbourne Food Blog. Discover amazing food experiences in
+          Melbourne.
+        </p>
+      </div>
+    </footer>
+  </body>
 </html>
 
-<style>
-	html,
-	body {
-		margin: 0;
-		width: 100%;
-		height: 100%;
-	}
+<style is:global>
+  @import "../styles/main.scss";
 </style>

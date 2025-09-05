@@ -1,11 +1,281 @@
 ---
-import Welcome from '../components/Welcome.astro';
-import Layout from '../layouts/Layout.astro';
+import Layout from "../layouts/Layout.astro";
+import ReviewCard from "../components/ReviewCard.astro";
+import CategoryCard from "../components/CategoryCard.astro";
 
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+// Mock data - in production this would come from your API
+const topRatedReviews = [
+  {
+    title: "Attica",
+    rating: 5,
+    cuisine: "Modern Australian",
+    location: "Ripponlea",
+    price: "$$$$",
+    image:
+      "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=400&h=300&fit=crop",
+    href: "/reviews/attica",
+  },
+  {
+    title: "Chin Chin",
+    rating: 4.5,
+    cuisine: "Thai",
+    location: "CBD",
+    price: "$$",
+    image:
+      "https://images.unsplash.com/photo-1551218808-94e220e084d2?w=400&h=300&fit=crop",
+    href: "/reviews/chin-chin",
+  },
+  {
+    title: "Pellegrini's Espresso Bar",
+    rating: 4.8,
+    cuisine: "Italian",
+    location: "CBD",
+    price: "$",
+    image:
+      "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=400&h=300&fit=crop",
+    href: "/reviews/pellegrinis",
+  },
+];
+
+const cuisineTypes = [
+  { name: "Italian", count: 24, color: "#e74c3c" },
+  { name: "Chinese", count: 18, color: "#f39c12" },
+  { name: "Japanese", count: 15, color: "#3498db" },
+  { name: "Thai", count: 12, color: "#2ecc71" },
+  { name: "Indian", count: 10, color: "#9b59b6" },
+  { name: "Mexican", count: 8, color: "#e67e22" },
+];
+
+const locations = [
+  { name: "CBD", count: 45 },
+  { name: "Fitzroy", count: 32 },
+  { name: "Carlton", count: 28 },
+  { name: "Southbank", count: 22 },
+  { name: "Richmond", count: 18 },
+  { name: "South Yarra", count: 15 },
+];
+
+const latestReviews = [
+  {
+    title: "Flower Drum",
+    rating: 4.2,
+    cuisine: "Chinese",
+    location: "CBD",
+    price: "$$$",
+    href: "/reviews/flower-drum",
+  },
+  {
+    title: "Cumulus Inc.",
+    rating: 4.6,
+    cuisine: "Modern Australian",
+    location: "CBD",
+    price: "$$$",
+    href: "/reviews/cumulus-inc",
+  },
+  {
+    title: "Maha",
+    rating: 4.4,
+    cuisine: "Middle Eastern",
+    location: "CBD",
+    price: "$$$",
+    href: "/reviews/maha",
+  },
+  {
+    title: "Supernormal",
+    rating: 4.3,
+    cuisine: "Asian Fusion",
+    location: "CBD",
+    price: "$$",
+    href: "/reviews/supernormal",
+  },
+  {
+    title: "Cutler & Co",
+    rating: 4.7,
+    cuisine: "Modern Australian",
+    location: "Fitzroy",
+    price: "$$$",
+    href: "/reviews/cutler-co",
+  },
+  {
+    title: "D.O.C Pizza",
+    rating: 4.1,
+    cuisine: "Italian",
+    location: "Carlton",
+    price: "$$",
+    href: "/reviews/doc-pizza",
+  },
+];
 ---
 
-<Layout>
-	<Welcome />
+<Layout title="Melbourne Food Blog - Discover Amazing Restaurants">
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="container">
+      <div class="hero__content">
+        <h1 class="hero__title">Discover Melbourne's Best Restaurants</h1>
+        <p class="hero__subtitle">
+          From hidden gems to fine dining, explore our curated collection of
+          Melbourne's most delicious experiences.
+        </p>
+        <div class="hero__actions">
+          <a href="/reviews" class="btn btn--primary btn--lg">Browse Reviews</a>
+          <a href="/search" class="btn btn--outline btn--lg"
+            >Search Restaurants</a
+          >
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Top Rated Reviews -->
+  <section class="section">
+    <div class="container">
+      <h2 class="section__title">Top Rated Reviews</h2>
+      <div class="grid grid--3-cols">
+        {
+          topRatedReviews.map((review) => (
+            <ReviewCard {...review} size="large" />
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- Cuisine Types -->
+  <section class="section section--alt">
+    <div class="container">
+      <h2 class="section__title">Explore by Cuisine</h2>
+      <div class="grid grid--3-cols">
+        {
+          cuisineTypes.map((cuisine) => (
+            <CategoryCard
+              name={cuisine.name}
+              count={cuisine.count}
+              type="cuisine"
+              href={`/category/cuisine/${cuisine.name.toLowerCase()}`}
+              color={cuisine.color}
+            />
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- Locations -->
+  <section class="section">
+    <div class="container">
+      <h2 class="section__title">Popular Locations</h2>
+      <div class="grid grid--3-cols">
+        {
+          locations.map((location) => (
+            <CategoryCard
+              name={location.name}
+              count={location.count}
+              type="location"
+              href={`/category/location/${location.name.toLowerCase()}`}
+            />
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- Latest Reviews -->
+  <section class="section section--alt">
+    <div class="container">
+      <div class="section__header">
+        <h2 class="section__title">Latest Reviews</h2>
+        <a href="/reviews" class="btn btn--outline">View All Reviews</a>
+      </div>
+      <div class="grid grid--2-cols">
+        {
+          latestReviews.map((review) => (
+            <ReviewCard {...review} size="medium" />
+          ))
+        }
+      </div>
+    </div>
+  </section>
 </Layout>
+
+<style lang="scss">
+  .hero {
+    background: linear-gradient(
+      135deg,
+      var(--color-primary) 0%,
+      var(--color-primary-dark) 100%
+    );
+    color: var(--color-white);
+    padding: var(--spacing-16) 0;
+    text-align: center;
+  }
+
+  .hero__content {
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .hero__title {
+    font-size: var(--font-size-4xl);
+    font-weight: var(--font-weight-bold);
+    margin-bottom: var(--spacing-6);
+    color: var(--color-white);
+
+    @media (min-width: 640px) {
+      font-size: var(--font-size-5xl);
+    }
+  }
+
+  .hero__subtitle {
+    font-size: var(--font-size-lg);
+    margin-bottom: var(--spacing-8);
+    opacity: 0.9;
+    line-height: var(--line-height-relaxed);
+  }
+
+  .hero__actions {
+    display: flex;
+    gap: var(--spacing-4);
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .section {
+    padding: var(--spacing-16) 0;
+  }
+
+  .section--alt {
+    background-color: var(--color-gray-50);
+  }
+
+  .section__title {
+    text-align: center;
+    margin-bottom: var(--spacing-12);
+    font-size: var(--font-size-3xl);
+  }
+
+  .section__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--spacing-12);
+    flex-wrap: wrap;
+    gap: var(--spacing-4);
+  }
+
+  .section__header .section__title {
+    margin-bottom: 0;
+    text-align: left;
+  }
+
+  @media (max-width: 640px) {
+    .section__header {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .section__header .section__title {
+      text-align: center;
+    }
+  }
+</style>

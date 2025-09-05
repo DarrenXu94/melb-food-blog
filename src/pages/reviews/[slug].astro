@@ -1,0 +1,429 @@
+---
+import Layout from '../../layouts/Layout.astro';
+
+// Define static paths for the dynamic route
+export async function getStaticPaths() {
+  const paths = [
+    { params: { slug: 'attica' } },
+    { params: { slug: 'chin-chin' } },
+    { params: { slug: 'pellegrinis' } },
+  ];
+  
+  return paths;
+}
+
+// Get the review ID from the URL
+const { slug } = Astro.params;
+
+// Mock data - in production this would come from your API
+const reviewData: Record<string, any> = {
+	'attica': {
+		title: "Attica",
+		rating: 5,
+		cuisine: "Modern Australian",
+		location: "Ripponlea",
+		price: "$$$$",
+		image: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=800&h=600&fit=crop",
+		content: `# Attica: A Culinary Journey Through Australia
+
+Attica is more than just a restaurant; it's an experience that celebrates the unique flavors and ingredients of Australia. Located in the quiet suburb of Ripponlea, this world-renowned establishment offers a dining experience that's both innovative and deeply rooted in Australian culture.
+
+## The Experience
+
+From the moment you step through the doors, you're transported into a world where every detail has been carefully considered. The atmosphere is intimate yet sophisticated, with warm lighting and natural materials creating a welcoming environment.
+
+## The Food
+
+The tasting menu is a journey through Australia's diverse landscape, featuring ingredients sourced from local producers and foragers. Each dish tells a story, from the native herbs and spices to the innovative techniques that bring out the best in each ingredient.
+
+### Standout Dishes
+
+- **Wallaby Tartare**: A delicate balance of flavors with native Australian ingredients
+- **Smoked Eel**: Perfectly prepared with a hint of bush spices
+- **Wattleseed Ice Cream**: A unique dessert that showcases native Australian flavors
+
+## Service
+
+The service at Attica is impeccable. The staff are knowledgeable, friendly, and passionate about the food they're serving. They're happy to explain each dish and the story behind the ingredients.
+
+## Verdict
+
+Attica is a must-visit for anyone serious about food. While it's certainly an investment, the experience is worth every penny. The combination of innovative cuisine, exceptional service, and a celebration of Australian ingredients makes this one of Melbourne's finest dining experiences.
+
+**Rating: 5/5** - An exceptional dining experience that showcases the best of Australian cuisine.`,
+		date: "2024-01-15",
+		author: "Food Critic"
+	},
+	'chin-chin': {
+		title: "Chin Chin",
+		rating: 4.5,
+		cuisine: "Thai",
+		location: "CBD",
+		price: "$$",
+		image: "https://images.unsplash.com/photo-1551218808-94e220e084d2?w=800&h=600&fit=crop",
+		content: `# Chin Chin: Modern Thai Cuisine in the Heart of Melbourne
+
+Chin Chin has become a Melbourne institution, known for its vibrant atmosphere and bold Thai flavors. Located in the bustling CBD, this restaurant brings the energy of Bangkok to Melbourne's dining scene.
+
+## The Atmosphere
+
+The restaurant buzzes with energy from the moment you walk in. The open kitchen allows you to watch the chefs at work, creating an immersive dining experience. The decor is modern and colorful, reflecting the vibrant nature of Thai cuisine.
+
+## The Food
+
+The menu features classic Thai dishes with modern twists, using fresh ingredients and authentic spices. The flavors are bold and authentic, transporting you straight to the streets of Bangkok.
+
+### Must-Try Dishes
+
+- **Pad Thai**: Perfectly balanced with the right amount of sweetness and spice
+- **Green Curry**: Rich and aromatic with tender chicken
+- **Som Tam**: Fresh and zesty papaya salad with the perfect amount of heat
+
+## Service
+
+The service is efficient and friendly, with staff who are knowledgeable about the menu and happy to make recommendations. The pace is good, allowing you to enjoy each dish without feeling rushed.
+
+## Value
+
+Chin Chin offers excellent value for money, with generous portions and reasonable prices for the quality of food and experience you receive.
+
+## Verdict
+
+Chin Chin delivers on its promise of authentic Thai flavors in a modern setting. It's perfect for both casual dinners and special occasions, offering consistently good food and a great atmosphere.
+
+**Rating: 4.5/5** - Excellent Thai cuisine with great atmosphere and value.`,
+		date: "2024-01-10",
+		author: "Food Critic"
+	},
+	'pellegrinis': {
+		title: "Pellegrini's Espresso Bar",
+		rating: 4.8,
+		cuisine: "Italian",
+		location: "CBD",
+		price: "$",
+		image: "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=800&h=600&fit=crop",
+		content: `# Pellegrini's Espresso Bar: A Melbourne Classic
+
+Pellegrini's Espresso Bar is a Melbourne institution, serving authentic Italian coffee and simple, delicious food since 1954. This tiny cafe in the heart of the CBD captures the essence of traditional Italian espresso bars.
+
+## The Experience
+
+Walking into Pellegrini's is like stepping back in time. The decor hasn't changed much over the decades, and that's part of its charm. The small space is always bustling with locals and tourists alike, creating a vibrant atmosphere.
+
+## The Coffee
+
+The coffee at Pellegrini's is exceptional. Made using traditional Italian methods, each cup is a perfect balance of strength and flavor. The baristas are skilled and passionate about their craft.
+
+## The Food
+
+While the menu is simple, everything is made with care and attention to detail. The pasta dishes are authentic and delicious, and the paninis are perfect for a quick lunch.
+
+### Highlights
+
+- **Espresso**: Perfectly balanced and full of flavor
+- **Pasta**: Simple but delicious, made with fresh ingredients
+- **Paninis**: Fresh and satisfying, perfect for lunch
+
+## Service
+
+The service is friendly and efficient, with staff who have been working there for years. They know their regular customers and make everyone feel welcome.
+
+## Value
+
+Pellegrini's offers excellent value for money, with reasonable prices for high-quality coffee and food. It's a great place to grab a quick coffee or enjoy a leisurely lunch.
+
+## Verdict
+
+Pellegrini's is a Melbourne classic that shouldn't be missed. It offers authentic Italian coffee and food in a charming, historic setting. Whether you're a coffee connoisseur or just looking for a great place to eat, Pellegrini's delivers.
+
+**Rating: 4.8/5** - A Melbourne institution with exceptional coffee and authentic Italian flavors.`,
+		date: "2024-01-08",
+		author: "Food Critic"
+	}
+};
+
+const review = reviewData[slug || ''] || {
+	title: "Review Not Found",
+	rating: 0,
+	cuisine: "",
+	location: "",
+	price: "",
+	image: "",
+	content: "The review you're looking for could not be found.",
+	date: "",
+	author: ""
+};
+
+const hasReview = reviewData[slug || ''];
+---
+
+<Layout title={`${review.title} - Melbourne Food Blog`}>
+	{hasReview ? (
+		<article class="review-page">
+			<!-- Hero Section -->
+			<section class="review-hero">
+				<div class="container">
+					<div class="review-hero__content">
+						<div class="review-hero__image">
+							<img src={review.image} alt={review.title} />
+						</div>
+						<div class="review-hero__info">
+							<h1 class="review-title">{review.title}</h1>
+							<div class="review-meta">
+								<div class="review-rating">
+									<span class="rating-label">Rating:</span>
+									<span class="rating-value">{review.rating}/5</span>
+								</div>
+								<div class="review-details">
+									<span class="cuisine">{review.cuisine}</span>
+									<span class="location">{review.location}</span>
+									<span class="price">{review.price}</span>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</section>
+
+			<!-- Review Content -->
+			<section class="review-content">
+				<div class="container">
+					<div class="review-body">
+						<div class="review-text" set:html={review.content}></div>
+						
+						<div class="review-footer">
+							<div class="review-author">
+								<span class="author-label">Reviewed by:</span>
+								<span class="author-name">{review.author}</span>
+							</div>
+							<div class="review-date">
+								<span class="date-label">Date:</span>
+								<span class="date-value">{review.date}</span>
+							</div>
+						</div>
+					</div>
+				</div>
+			</section>
+
+			<!-- Related Reviews -->
+			<section class="related-reviews">
+				<div class="container">
+					<h2 class="related-title">More Reviews</h2>
+					<div class="related-links">
+						<a href="/reviews" class="btn btn--outline">View All Reviews</a>
+						<a href="/reviews?cuisine={review.cuisine.toLowerCase()}" class="btn btn--primary">
+							More {review.cuisine} Restaurants
+						</a>
+					</div>
+				</div>
+			</section>
+		</article>
+	) : (
+		<div class="error-page">
+			<div class="container">
+				<div class="error-content">
+					<h1 class="error-title">Review Not Found</h1>
+					<p class="error-message">The review you're looking for could not be found.</p>
+					<a href="/reviews" class="btn btn--primary">Browse All Reviews</a>
+				</div>
+			</div>
+		</div>
+	)}
+</Layout>
+
+<style>
+	.review-page {
+		padding: 0;
+	}
+	
+	.review-hero {
+		background-color: var(--color-gray-50);
+		padding: var(--spacing-12) 0;
+		border-bottom: 1px solid var(--color-gray-200);
+	}
+	
+	.review-hero__content {
+		display: grid;
+		gap: var(--spacing-8);
+		grid-template-columns: 1fr;
+		
+		@media (min-width: 768px) {
+			grid-template-columns: 400px 1fr;
+			align-items: center;
+		}
+	}
+	
+	.review-hero__image {
+		width: 100%;
+		border-radius: var(--radius-lg);
+		overflow: hidden;
+		box-shadow: var(--shadow-lg);
+	}
+	
+	.review-hero__image img {
+		width: 100%;
+		height: 300px;
+		object-fit: cover;
+		
+		@media (min-width: 768px) {
+			height: 400px;
+		}
+	}
+	
+	.review-title {
+		font-size: var(--font-size-4xl);
+		font-weight: var(--font-weight-bold);
+		margin-bottom: var(--spacing-6);
+		color: var(--color-gray-900);
+	}
+	
+	.review-meta {
+		display: flex;
+		flex-direction: column;
+		gap: var(--spacing-4);
+	}
+	
+	.review-rating {
+		display: flex;
+		align-items: center;
+		gap: var(--spacing-2);
+		font-size: var(--font-size-lg);
+	}
+	
+	.rating-label {
+		color: var(--color-gray-600);
+		font-weight: var(--font-weight-medium);
+	}
+	
+	.rating-value {
+		color: var(--color-primary);
+		font-weight: var(--font-weight-bold);
+		font-size: var(--font-size-xl);
+	}
+	
+	.review-details {
+		display: flex;
+		flex-wrap: wrap;
+		gap: var(--spacing-4);
+	}
+	
+	.review-details span {
+		background-color: var(--color-white);
+		padding: var(--spacing-2) var(--spacing-4);
+		border-radius: var(--radius-md);
+		font-size: var(--font-size-sm);
+		font-weight: var(--font-weight-medium);
+		border: 1px solid var(--color-gray-200);
+	}
+	
+	.review-content {
+		padding: var(--spacing-12) 0;
+	}
+	
+	.review-body {
+		max-width: 800px;
+		margin: 0 auto;
+	}
+	
+	.review-text {
+		font-size: var(--font-size-lg);
+		line-height: var(--line-height-relaxed);
+		color: var(--color-gray-800);
+		margin-bottom: var(--spacing-12);
+	}
+	
+	.review-text h2 {
+		font-size: var(--font-size-2xl);
+		margin-top: var(--spacing-8);
+		margin-bottom: var(--spacing-4);
+		color: var(--color-gray-900);
+	}
+	
+	.review-text h3 {
+		font-size: var(--font-size-xl);
+		margin-top: var(--spacing-6);
+		margin-bottom: var(--spacing-3);
+		color: var(--color-gray-900);
+	}
+	
+	.review-text ul {
+		margin: var(--spacing-4) 0;
+		padding-left: var(--spacing-6);
+	}
+	
+	.review-text li {
+		margin-bottom: var(--spacing-2);
+	}
+	
+	.review-footer {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		padding: var(--spacing-6);
+		background-color: var(--color-gray-50);
+		border-radius: var(--radius-lg);
+		border: 1px solid var(--color-gray-200);
+		flex-wrap: wrap;
+		gap: var(--spacing-4);
+	}
+	
+	.review-author,
+	.review-date {
+		display: flex;
+		align-items: center;
+		gap: var(--spacing-2);
+	}
+	
+	.author-label,
+	.date-label {
+		color: var(--color-gray-600);
+		font-weight: var(--font-weight-medium);
+	}
+	
+	.author-name,
+	.date-value {
+		color: var(--color-gray-900);
+		font-weight: var(--font-weight-semibold);
+	}
+	
+	.related-reviews {
+		background-color: var(--color-gray-50);
+		padding: var(--spacing-12) 0;
+		border-top: 1px solid var(--color-gray-200);
+	}
+	
+	.related-title {
+		text-align: center;
+		margin-bottom: var(--spacing-8);
+		font-size: var(--font-size-2xl);
+	}
+	
+	.related-links {
+		display: flex;
+		justify-content: center;
+		gap: var(--spacing-4);
+		flex-wrap: wrap;
+	}
+	
+	.error-page {
+		padding: var(--spacing-16) 0;
+		text-align: center;
+	}
+	
+	.error-content {
+		max-width: 500px;
+		margin: 0 auto;
+	}
+	
+	.error-title {
+		font-size: var(--font-size-4xl);
+		margin-bottom: var(--spacing-6);
+		color: var(--color-gray-900);
+	}
+	
+	.error-message {
+		font-size: var(--font-size-lg);
+		color: var(--color-gray-600);
+		margin-bottom: var(--spacing-8);
+	}
+</style>

@@ -1,0 +1,85 @@
+---
+export interface Props {
+  name: string;
+  count?: number;
+  type: "cuisine" | "location";
+  href?: string;
+  color?: string;
+}
+
+const {
+  name,
+  count,
+  type,
+  href = "#",
+  color = "var(--color-primary)",
+} = Astro.props;
+---
+
+<div class="category-card">
+  <a href={href} class="category-card__link">
+    <div class="category-card__content">
+      <h3 class="category-card__name">{name}</h3>
+      {
+        count && (
+          <p class="category-card__count">
+            {count} {count === 1 ? "review" : "reviews"}
+          </p>
+        )
+      }
+    </div>
+    <div class="category-card__indicator" style="background-color: {color}">
+    </div>
+  </a>
+</div>
+
+<style>
+  .category-card {
+    background-color: var(--color-white);
+    border: 1px solid var(--color-gray-200);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    transition: all var(--transition-normal);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .category-card:hover {
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
+  }
+
+  .category-card__link {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+    position: relative;
+  }
+
+  .category-card__content {
+    padding: var(--spacing-6);
+    position: relative;
+    z-index: 1;
+  }
+
+  .category-card__name {
+    margin: 0 0 var(--spacing-2) 0;
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-gray-900);
+  }
+
+  .category-card__count {
+    margin: 0;
+    font-size: var(--font-size-sm);
+    color: var(--color-gray-600);
+  }
+
+  .category-card__indicator {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background-color: var(--color-primary);
+  }
+</style>

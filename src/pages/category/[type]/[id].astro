@@ -1,0 +1,493 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import ReviewCard from '../../../components/ReviewCard.astro';
+
+// Define static paths for the dynamic route
+export async function getStaticPaths() {
+  const paths = [
+    // Cuisine categories
+    { params: { type: 'cuisine', id: 'italian' } },
+    { params: { type: 'cuisine', id: 'chinese' } },
+    { params: { type: 'cuisine', id: 'japanese' } },
+    { params: { type: 'cuisine', id: 'thai' } },
+    // Location categories
+    { params: { type: 'location', id: 'cbd' } },
+    { params: { type: 'location', id: 'fitzroy' } },
+    { params: { type: 'location', id: 'carlton' } },
+    { params: { type: 'location', id: 'southbank' } },
+  ];
+  
+  return paths;
+}
+
+// Get the category type and ID from the URL
+const { type, id } = Astro.params;
+
+// Mock data - in production this would come from your API
+const cuisineData: Record<string, any> = {
+	'italian': {
+		name: "Italian",
+		description: "Authentic Italian cuisine featuring fresh pasta, wood-fired pizzas, and traditional recipes passed down through generations.",
+		color: "#e74c3c",
+		reviews: [
+			{
+				title: "Pellegrini's Espresso Bar",
+				rating: 4.8,
+				cuisine: "Italian",
+				location: "CBD",
+				price: "$",
+				image: "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=400&h=300&fit=crop",
+				href: "/reviews/pellegrinis"
+			},
+			{
+				title: "D.O.C Pizza",
+				rating: 4.1,
+				cuisine: "Italian",
+				location: "Carlton",
+				price: "$$",
+				href: "/reviews/doc-pizza"
+			},
+			{
+				title: "Grossi Florentino",
+				rating: 4.6,
+				cuisine: "Italian",
+				location: "CBD",
+				price: "$$$$",
+				href: "/reviews/grossi-florentino"
+			}
+		]
+	},
+	'chinese': {
+		name: "Chinese",
+		description: "Traditional Chinese cuisine with modern interpretations, featuring dim sum, noodles, and regional specialties.",
+		color: "#f39c12",
+		reviews: [
+			{
+				title: "Flower Drum",
+				rating: 4.2,
+				cuisine: "Chinese",
+				location: "CBD",
+				price: "$$$",
+				href: "/reviews/flower-drum"
+			},
+			{
+				title: "Spice Temple",
+				rating: 4.0,
+				cuisine: "Chinese",
+				location: "CBD",
+				price: "$$$",
+				href: "/reviews/spice-temple"
+			}
+		]
+	},
+	'japanese': {
+		name: "Japanese",
+		description: "Fresh sushi, ramen, and traditional Japanese dishes prepared with precision and attention to detail.",
+		color: "#3498db",
+		reviews: [
+			{
+				title: "Nobu Melbourne",
+				rating: 4.3,
+				cuisine: "Japanese",
+				location: "Southbank",
+				price: "$$$$",
+				href: "/reviews/nobu-melbourne"
+			}
+		]
+	},
+	'thai': {
+		name: "Thai",
+		description: "Authentic Thai flavors with perfect balance of sweet, sour, salty, and spicy elements.",
+		color: "#2ecc71",
+		reviews: [
+			{
+				title: "Chin Chin",
+				rating: 4.5,
+				cuisine: "Thai",
+				location: "CBD",
+				price: "$$",
+				image: "https://images.unsplash.com/photo-1551218808-94e220e084d2?w=400&h=300&fit=crop",
+				href: "/reviews/chin-chin"
+			},
+			{
+				title: "Longrain",
+				rating: 4.2,
+				cuisine: "Thai",
+				location: "CBD",
+				price: "$$$",
+				href: "/reviews/longrain"
+			}
+		]
+	}
+};
+
+const locationData: Record<string, any> = {
+	'cbd': {
+		name: "CBD",
+		description: "The heart of Melbourne's dining scene, featuring everything from casual cafes to fine dining establishments.",
+		reviews: [
+			{
+				title: "Chin Chin",
+				rating: 4.5,
+				cuisine: "Thai",
+				location: "CBD",
+				price: "$$",
+				image: "https://images.unsplash.com/photo-1551218808-94e220e084d2?w=400&h=300&fit=crop",
+				href: "/reviews/chin-chin"
+			},
+			{
+				title: "Pellegrini's Espresso Bar",
+				rating: 4.8,
+				cuisine: "Italian",
+				location: "CBD",
+				price: "$",
+				image: "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=400&h=300&fit=crop",
+				href: "/reviews/pellegrinis"
+			},
+			{
+				title: "Flower Drum",
+				rating: 4.2,
+				cuisine: "Chinese",
+				location: "CBD",
+				price: "$$$",
+				href: "/reviews/flower-drum"
+			},
+			{
+				title: "Cumulus Inc.",
+				rating: 4.6,
+				cuisine: "Modern Australian",
+				location: "CBD",
+				price: "$$$",
+				href: "/reviews/cumulus-inc"
+			},
+			{
+				title: "Maha",
+				rating: 4.4,
+				cuisine: "Middle Eastern",
+				location: "CBD",
+				price: "$$$",
+				href: "/reviews/maha"
+			},
+			{
+				title: "Supernormal",
+				rating: 4.3,
+				cuisine: "Asian Fusion",
+				location: "CBD",
+				price: "$$",
+				href: "/reviews/supernormal"
+			}
+		]
+	},
+	'fitzroy': {
+		name: "Fitzroy",
+		description: "Melbourne's creative hub with trendy cafes, innovative restaurants, and a vibrant food scene.",
+		reviews: [
+			{
+				title: "Cutler & Co",
+				rating: 4.7,
+				cuisine: "Modern Australian",
+				location: "Fitzroy",
+				price: "$$$",
+				href: "/reviews/cutler-co"
+			}
+		]
+	},
+	'carlton': {
+		name: "Carlton",
+		description: "Home to Melbourne's Italian community with authentic trattorias and cozy cafes.",
+		reviews: [
+			{
+				title: "D.O.C Pizza",
+				rating: 4.1,
+				cuisine: "Italian",
+				location: "Carlton",
+				price: "$$",
+				href: "/reviews/doc-pizza"
+			}
+		]
+	},
+	'southbank': {
+		name: "Southbank",
+		description: "Riverside dining with stunning city views and a mix of casual and upscale restaurants.",
+		reviews: [
+			{
+				title: "Nobu Melbourne",
+				rating: 4.3,
+				cuisine: "Japanese",
+				location: "Southbank",
+				price: "$$$$",
+				href: "/reviews/nobu-melbourne"
+			}
+		]
+	}
+};
+
+// Get the appropriate data based on type and id
+let categoryData: any = null;
+let categoryName = "";
+let categoryDescription = "";
+let categoryReviews: any[] = [];
+let categoryColor = "";
+
+if (type === 'cuisine' && id && cuisineData[id]) {
+	categoryData = cuisineData[id];
+	categoryName = categoryData.name;
+	categoryDescription = categoryData.description;
+	categoryReviews = categoryData.reviews;
+	categoryColor = categoryData.color;
+} else if (type === 'location' && id && locationData[id]) {
+	categoryData = locationData[id];
+	categoryName = categoryData.name;
+	categoryDescription = categoryData.description;
+	categoryReviews = categoryData.reviews;
+	categoryColor = "#3498db"; // Default color for locations
+}
+
+const hasCategory = categoryData !== null;
+---
+
+<Layout title={`${hasCategory ? categoryName : 'Category'} - Melbourne Food Blog`}>
+	{hasCategory ? (
+		<div class="category-page">
+			<!-- Category Header -->
+			<section class="category-header">
+				<div class="container">
+					<div class="category-hero">
+						<div class="category-info">
+							<h1 class="category-title">{categoryName}</h1>
+							<p class="category-description">{categoryDescription}</p>
+							<div class="category-stats">
+								<div class="stat">
+									<span class="stat-number">{categoryReviews.length}</span>
+									<span class="stat-label">{categoryReviews.length === 1 ? 'Restaurant' : 'Restaurants'}</span>
+								</div>
+								<div class="stat">
+									<span class="stat-number">
+										{(categoryReviews.reduce((sum, review) => sum + review.rating, 0) / categoryReviews.length).toFixed(1)}
+									</span>
+									<span class="stat-label">Average Rating</span>
+								</div>
+							</div>
+						</div>
+						<div class="category-visual" style="background-color: {categoryColor}20;">
+							<div class="category-icon" style="background-color: {categoryColor};">
+								{type === 'cuisine' ? '🍽️' : '📍'}
+							</div>
+						</div>
+					</div>
+				</div>
+			</section>
+
+			<!-- Category Reviews -->
+			<section class="category-reviews">
+				<div class="container">
+					<div class="reviews-header">
+						<h2 class="reviews-title">
+							{categoryReviews.length} {categoryReviews.length === 1 ? 'Restaurant' : 'Restaurants'} in {categoryName}
+						</h2>
+						<div class="reviews-actions">
+							<a href={`/search?${type}=${id}`} class="btn btn--outline">Search More</a>
+							<a href="/category" class="btn btn--primary">Browse Categories</a>
+						</div>
+					</div>
+
+					<div class="grid grid--3-cols">
+						{categoryReviews.map((review) => (
+							<ReviewCard {...review} size="medium" />
+						))}
+					</div>
+				</div>
+			</section>
+
+			<!-- Related Categories -->
+			<section class="related-categories">
+				<div class="container">
+					<h2 class="related-title">Explore More</h2>
+					<div class="related-links">
+						<a href="/category" class="btn btn--outline">All Categories</a>
+						<a href="/reviews" class="btn btn--primary">All Reviews</a>
+						<a href="/search" class="btn btn--secondary">Search Restaurants</a>
+					</div>
+				</div>
+			</section>
+		</div>
+	) : (
+		<div class="error-page">
+			<div class="container">
+				<div class="error-content">
+					<h1 class="error-title">Category Not Found</h1>
+					<p class="error-message">The category you're looking for could not be found.</p>
+					<a href="/category" class="btn btn--primary">Browse All Categories</a>
+				</div>
+			</div>
+		</div>
+	)}
+</Layout>
+
+<style>
+	.category-page {
+		padding: 0;
+	}
+	
+	.category-header {
+		background-color: var(--color-gray-50);
+		padding: var(--spacing-12) 0;
+		border-bottom: 1px solid var(--color-gray-200);
+	}
+	
+	.category-hero {
+		display: grid;
+		gap: var(--spacing-8);
+		grid-template-columns: 1fr;
+		align-items: center;
+		
+		@media (min-width: 768px) {
+			grid-template-columns: 2fr 1fr;
+		}
+	}
+	
+	.category-title {
+		font-size: var(--font-size-4xl);
+		font-weight: var(--font-weight-bold);
+		margin-bottom: var(--spacing-4);
+		color: var(--color-gray-900);
+	}
+	
+	.category-description {
+		font-size: var(--font-size-lg);
+		color: var(--color-gray-600);
+		margin-bottom: var(--spacing-6);
+		line-height: var(--line-height-relaxed);
+	}
+	
+	.category-stats {
+		display: flex;
+		gap: var(--spacing-8);
+		flex-wrap: wrap;
+	}
+	
+	.stat {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		text-align: center;
+	}
+	
+	.stat-number {
+		font-size: var(--font-size-3xl);
+		font-weight: var(--font-weight-bold);
+		color: var(--color-primary);
+		margin-bottom: var(--spacing-1);
+	}
+	
+	.stat-label {
+		font-size: var(--font-size-sm);
+		color: var(--color-gray-600);
+		font-weight: var(--font-weight-medium);
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
+	}
+	
+	.category-visual {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		padding: var(--spacing-8);
+		border-radius: var(--radius-lg);
+		min-height: 200px;
+	}
+	
+	.category-icon {
+		width: 120px;
+		height: 120px;
+		border-radius: 50%;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		font-size: 3rem;
+		color: var(--color-white);
+		box-shadow: var(--shadow-lg);
+	}
+	
+	.category-reviews {
+		padding: var(--spacing-12) 0;
+	}
+	
+	.reviews-header {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		margin-bottom: var(--spacing-8);
+		flex-wrap: wrap;
+		gap: var(--spacing-4);
+	}
+	
+	.reviews-title {
+		font-size: var(--font-size-2xl);
+		font-weight: var(--font-weight-semibold);
+		margin: 0;
+	}
+	
+	.reviews-actions {
+		display: flex;
+		gap: var(--spacing-4);
+		flex-wrap: wrap;
+	}
+	
+	
+	.related-categories {
+		background-color: var(--color-gray-50);
+		padding: var(--spacing-12) 0;
+		border-top: 1px solid var(--color-gray-200);
+	}
+	
+	.related-title {
+		text-align: center;
+		margin-bottom: var(--spacing-8);
+		font-size: var(--font-size-2xl);
+	}
+	
+	.related-links {
+		display: flex;
+		justify-content: center;
+		gap: var(--spacing-4);
+		flex-wrap: wrap;
+	}
+	
+	.error-page {
+		padding: var(--spacing-16) 0;
+		text-align: center;
+	}
+	
+	.error-content {
+		max-width: 500px;
+		margin: 0 auto;
+	}
+	
+	.error-title {
+		font-size: var(--font-size-4xl);
+		margin-bottom: var(--spacing-6);
+		color: var(--color-gray-900);
+	}
+	
+	.error-message {
+		font-size: var(--font-size-lg);
+		color: var(--color-gray-600);
+		margin-bottom: var(--spacing-8);
+	}
+	
+	@media (max-width: 640px) {
+		.reviews-header {
+			flex-direction: column;
+			align-items: stretch;
+		}
+		
+		.reviews-title {
+			text-align: center;
+		}
+		
+		.reviews-actions {
+			justify-content: center;
+		}
+	}
+</style>
