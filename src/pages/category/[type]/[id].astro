@@ -29,55 +29,14 @@ const cuisineData: Record<string, any> = {
 		name: "Italian",
 		description: "Authentic Italian cuisine featuring fresh pasta, wood-fired pizzas, and traditional recipes passed down through generations.",
 		color: "#e74c3c",
-		reviews: [
-			{
-				title: "Pellegrini's Espresso Bar",
-				rating: 4.8,
-				cuisine: "Italian",
-				location: "CBD",
-				price: "$",
-				image: "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=400&h=300&fit=crop",
-				href: "/reviews/pellegrinis"
-			},
-			{
-				title: "D.O.C Pizza",
-				rating: 4.1,
-				cuisine: "Italian",
-				location: "Carlton",
-				price: "$$",
-				href: "/reviews/doc-pizza"
-			},
-			{
-				title: "Grossi Florentino",
-				rating: 4.6,
-				cuisine: "Italian",
-				location: "CBD",
-				price: "$$$$",
-				href: "/reviews/grossi-florentino"
-			}
-		]
+		reviews: []
 	},
 	'chinese': {
 		name: "Chinese",
 		description: "Traditional Chinese cuisine with modern interpretations, featuring dim sum, noodles, and regional specialties.",
 		color: "#f39c12",
 		reviews: [
-			{
-				title: "Flower Drum",
-				rating: 4.2,
-				cuisine: "Chinese",
-				location: "CBD",
-				price: "$$$",
-				href: "/reviews/flower-drum"
-			},
-			{
-				title: "Spice Temple",
-				rating: 4.0,
-				cuisine: "Chinese",
-				location: "CBD",
-				price: "$$$",
-				href: "/reviews/spice-temple"
-			}
+			
 		]
 	},
 	'japanese': {
@@ -85,14 +44,7 @@ const cuisineData: Record<string, any> = {
 		description: "Fresh sushi, ramen, and traditional Japanese dishes prepared with precision and attention to detail.",
 		color: "#3498db",
 		reviews: [
-			{
-				title: "Nobu Melbourne",
-				rating: 4.3,
-				cuisine: "Japanese",
-				location: "Southbank",
-				price: "$$$$",
-				href: "/reviews/nobu-melbourne"
-			}
+			
 		]
 	},
 	'thai': {
@@ -100,23 +52,7 @@ const cuisineData: Record<string, any> = {
 		description: "Authentic Thai flavors with perfect balance of sweet, sour, salty, and spicy elements.",
 		color: "#2ecc71",
 		reviews: [
-			{
-				title: "Chin Chin",
-				rating: 4.5,
-				cuisine: "Thai",
-				location: "CBD",
-				price: "$$",
-				image: "https://images.unsplash.com/photo-1551218808-94e220e084d2?w=400&h=300&fit=crop",
-				href: "/reviews/chin-chin"
-			},
-			{
-				title: "Longrain",
-				rating: 4.2,
-				cuisine: "Thai",
-				location: "CBD",
-				price: "$$$",
-				href: "/reviews/longrain"
-			}
+			
 		]
 	}
 };
@@ -126,98 +62,28 @@ const locationData: Record<string, any> = {
 		name: "CBD",
 		description: "The heart of Melbourne's dining scene, featuring everything from casual cafes to fine dining establishments.",
 		reviews: [
-			{
-				title: "Chin Chin",
-				rating: 4.5,
-				cuisine: "Thai",
-				location: "CBD",
-				price: "$$",
-				image: "https://images.unsplash.com/photo-1551218808-94e220e084d2?w=400&h=300&fit=crop",
-				href: "/reviews/chin-chin"
-			},
-			{
-				title: "Pellegrini's Espresso Bar",
-				rating: 4.8,
-				cuisine: "Italian",
-				location: "CBD",
-				price: "$",
-				image: "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=400&h=300&fit=crop",
-				href: "/reviews/pellegrinis"
-			},
-			{
-				title: "Flower Drum",
-				rating: 4.2,
-				cuisine: "Chinese",
-				location: "CBD",
-				price: "$$$",
-				href: "/reviews/flower-drum"
-			},
-			{
-				title: "Cumulus Inc.",
-				rating: 4.6,
-				cuisine: "Modern Australian",
-				location: "CBD",
-				price: "$$$",
-				href: "/reviews/cumulus-inc"
-			},
-			{
-				title: "Maha",
-				rating: 4.4,
-				cuisine: "Middle Eastern",
-				location: "CBD",
-				price: "$$$",
-				href: "/reviews/maha"
-			},
-			{
-				title: "Supernormal",
-				rating: 4.3,
-				cuisine: "Asian Fusion",
-				location: "CBD",
-				price: "$$",
-				href: "/reviews/supernormal"
-			}
+		
 		]
 	},
 	'fitzroy': {
 		name: "Fitzroy",
 		description: "Melbourne's creative hub with trendy cafes, innovative restaurants, and a vibrant food scene.",
 		reviews: [
-			{
-				title: "Cutler & Co",
-				rating: 4.7,
-				cuisine: "Modern Australian",
-				location: "Fitzroy",
-				price: "$$$",
-				href: "/reviews/cutler-co"
-			}
+			
 		]
 	},
 	'carlton': {
 		name: "Carlton",
 		description: "Home to Melbourne's Italian community with authentic trattorias and cozy cafes.",
 		reviews: [
-			{
-				title: "D.O.C Pizza",
-				rating: 4.1,
-				cuisine: "Italian",
-				location: "Carlton",
-				price: "$$",
-				href: "/reviews/doc-pizza"
-			}
+			
 		]
 	},
 	'southbank': {
 		name: "Southbank",
 		description: "Riverside dining with stunning city views and a mix of casual and upscale restaurants.",
 		reviews: [
-			{
-				title: "Nobu Melbourne",
-				rating: 4.3,
-				cuisine: "Japanese",
-				location: "Southbank",
-				price: "$$$$",
-				href: "/reviews/nobu-melbourne"
-			}
+			
 		]
 	}
 };
