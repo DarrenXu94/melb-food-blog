@@ -2,6 +2,7 @@
 import Layout from "../../layouts/Layout.astro";
 import ReviewCard from "../../components/ReviewCard.astro";
 import FilterSection from "../../components/FilterSection.astro";
+import type { Review } from "../../types/blog";
 
 // Get query parameters
 const url = new URL(Astro.request.url);
@@ -10,132 +11,35 @@ const location = url.searchParams.get("location") || "";
 const price = url.searchParams.get("price") || "";
 
 // Mock data - in production this would come from your API
-const allReviews = [
-  {
-    title: "Attica",
-    rating: 5,
-    cuisine: "Modern Australian",
-    location: "Ripponlea",
-    price: "$$$$",
-    image:
-      "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=400&h=300&fit=crop",
-    href: "/reviews/attica",
-  },
-  {
-    title: "Chin Chin",
-    rating: 4.5,
-    cuisine: "Thai",
-    location: "CBD",
-    price: "$$",
-    image:
-      "https://images.unsplash.com/photo-1551218808-94e220e084d2?w=400&h=300&fit=crop",
-    href: "/reviews/chin-chin",
-  },
-  {
-    title: "Pellegrini's Espresso Bar",
-    rating: 4.8,
-    cuisine: "Italian",
-    location: "CBD",
-    price: "$",
-    image:
-      "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=400&h=300&fit=crop",
-    href: "/reviews/pellegrinis",
-  },
-  {
-    title: "Flower Drum",
-    rating: 4.2,
-    cuisine: "Chinese",
-    location: "CBD",
-    price: "$$$",
-    href: "/reviews/flower-drum",
-  },
-  {
-    title: "Cumulus Inc.",
-    rating: 4.6,
-    cuisine: "Modern Australian",
-    location: "CBD",
-    price: "$$$",
-    href: "/reviews/cumulus-inc",
-  },
-  {
-    title: "Maha",
-    rating: 4.4,
-    cuisine: "Middle Eastern",
-    location: "CBD",
-    price: "$$$",
-    href: "/reviews/maha",
-  },
-  {
-    title: "Supernormal",
-    rating: 4.3,
-    cuisine: "Asian Fusion",
-    location: "CBD",
-    price: "$$",
-    href: "/reviews/supernormal",
-  },
-  {
-    title: "Cutler & Co",
-    rating: 4.7,
-    cuisine: "Modern Australian",
-    location: "Fitzroy",
-    price: "$$$",
-    href: "/reviews/cutler-co",
-  },
-  {
-    title: "D.O.C Pizza",
-    rating: 4.1,
-    cuisine: "Italian",
-    location: "Carlton",
-    price: "$$",
-    href: "/reviews/doc-pizza",
-  },
-  {
-    title: "Nobu Melbourne",
-    rating: 4.3,
-    cuisine: "Japanese",
-    location: "Southbank",
-    price: "$$$$",
-    href: "/reviews/nobu-melbourne",
-  },
-  {
-    title: "Spice Temple",
-    rating: 4.0,
-    cuisine: "Chinese",
-    location: "CBD",
-    price: "$$$",
-    href: "/reviews/spice-temple",
-  },
-  {
-    title: "Movida",
-    rating: 4.5,
-    cuisine: "Spanish",
-    location: "CBD",
-    price: "$$$",
-    href: "/reviews/movida",
-  },
-];
+const allReviews = [] as Review[];
 
 // Filter reviews based on query parameters
 let filteredReviews = allReviews;
 
 if (cuisine) {
   filteredReviews = filteredReviews.filter((review) =>
-    review.cuisine.toLowerCase().includes(cuisine.toLowerCase())
+    review.properties.cuisineType.some((c) =>
+      c.toLowerCase().includes(cuisine.toLowerCase())
+    )
   );
 }
 
 if (location) {
   filteredReviews = filteredReviews.filter((review) =>
-    review.location.toLowerCase().includes(location.toLowerCase())
+    review.properties.suburb.toLowerCase().includes(location.toLowerCase())
   );
 }
 
 if (price) {
-  filteredReviews = filteredReviews.filter((review) => review.price === price);
+  filteredReviews = filteredReviews.filter(
+    (review) => review.properties.priceRange === price
+  );
 }
 
 // Sort by rating (highest first)
-filteredReviews.sort((a, b) => b.rating - a.rating);
+filteredReviews.sort(
+  (a, b) => parseFloat(b.properties.rating) - parseFloat(a.properties.rating)
+);
 ---
 
 <Layout title="Restaurant Reviews - Melbourne Food Blog">
