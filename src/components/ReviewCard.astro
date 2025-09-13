@@ -1,22 +1,20 @@
 ---
-export interface Props {
-  title: string;
-  rating?: number;
-  cuisine?: string;
-  location?: string;
-  price?: string;
-  image?: string;
+import type { Review } from "../types/blog";
+
+export interface Props extends Review {
   href?: string;
   size?: "small" | "medium" | "large";
 }
 
 const {
-  title,
-  rating,
-  cuisine,
-  location,
-  price,
-  image,
+  properties: {
+    name: title,
+    // image,
+    rating,
+    cuisineType: cuisine,
+    suburb: location,
+    priceRange: price,
+  },
   href = "#",
   size = "medium",
 } = Astro.props;
@@ -25,14 +23,14 @@ const cardClass = `card card--${size}`;
 ---
 
 <article class={cardClass}>
-  {
+  <!-- {
     image && (
       <div
         class="card__image"
         style="height: 200px; background-image: url('{image}'); background-size: cover; background-position: center;"
       />
     )
-  }
+  } -->
 
   <div class="card__body">
     <h3 class="card__title">
@@ -51,7 +49,7 @@ const cardClass = `card card--${size}`;
       rating && (
         <div class="rating mb-4">
           <span class="text-sm text-gray-600">Rating: </span>
-          <span class="text-primary font-semibold">{rating}/5</span>
+          <span class="text-primary font-semibold">{rating}/10</span>
         </div>
       )
     }

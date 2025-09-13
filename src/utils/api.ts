@@ -11,7 +11,7 @@ import type {
   ErrorResponse,
 } from "../types/notion";
 
-const API_BASE_URL = "/.netlify/functions";
+const API_BASE_URL = import.meta.env.NETLIFY_API_BASE_URL;
 
 /**
  * Fetch all reviews from the Notion database
