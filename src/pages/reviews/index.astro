@@ -3,6 +3,8 @@ import Layout from "../../layouts/Layout.astro";
 import ReviewCard from "../../components/ReviewCard.astro";
 import FilterSection from "../../components/FilterSection.astro";
 import type { Review } from "../../types/blog";
+import { getAllReviews } from "../../utils/api";
+import { reviewDbRowToObject } from "../../utils/mappers";
 
 // Get query parameters
 const url = new URL(Astro.request.url);
@@ -10,8 +12,8 @@ const cuisine = url.searchParams.get("cuisine") || "";
 const location = url.searchParams.get("location") || "";
 const price = url.searchParams.get("price") || "";
 
-// Mock data - in production this would come from your API
-const allReviews = [] as Review[];
+const res = await getAllReviews();
+const allReviews = res.reviews.map(reviewDbRowToObject);
 
 // Filter reviews based on query parameters
 let filteredReviews = allReviews;
