@@ -31,8 +31,6 @@ const findReview = allReviews.find(
 	(r) => toCamelCaseAndRemoveSpecialChars(r.properties.name) === slug
 );
 
-
-
 const review = findReview || {
 	properties: {
 		name: "Review Not Found",
@@ -47,8 +45,12 @@ const review = findReview || {
 
 const markdown = review.id.length ? await getMarkdownFromReview(review.id) : '';
 
+const heroImage = findReview?.properties.filesMedia.length 
+	? findReview.properties.filesMedia[0]
+	: null;
 
-const hasReview = review;
+
+const hasReview = review.id.length > 0;
 ---
 
 <Layout title={`${review.properties.name} - Melbourne Food Blog`}>
@@ -58,6 +60,11 @@ const hasReview = review;
 			<section class="review-hero">
 				<div class="container">
 					<div class="review-hero__content">
+						{heroImage && (
+							<div class="review-hero__image">
+								<img src={heroImage} alt={review.properties.name} />
+							</div>
+						)}
 						{/* <div class="review-hero__image">
 							<img src={review.image} alt={review.title} />
 						</div> */}
@@ -83,7 +90,9 @@ const hasReview = review;
 			<section class="review-content">
 				<div class="container">
 					<div class="review-body">
-						<div class="review-text" set:html={markdown.review}></div>
+						{markdown && (
+							<div class="review-text" set:html={markdown.review}></div>
+						)}
 						
 						
 						<div class="review-footer">
