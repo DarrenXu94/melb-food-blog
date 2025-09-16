@@ -37,7 +37,8 @@ const review = findReview || {
 		cuisineType: ["N/A"],
 		suburb: "N/A",
 		priceRange: "N/A",
-		rating: 0
+		rating: 0,
+		notes: ''
 	},
 	created_time: '',
 	id: ''
@@ -49,6 +50,18 @@ const heroImage = findReview?.properties.filesMedia.length
 	? findReview.properties.filesMedia[0]
 	: null;
 
+// Split into {name, quote} objects
+const quotes = review.properties.notes
+  .split(/-\s*(?=[A-Z])/)
+  .map(s => s.trim())
+  .filter(Boolean)
+  .map(s => {
+    const [name, ...rest] = s.split(':');
+    return {
+      name: name.trim(),
+      quote: rest.join(':').trim(),
+    };
+  });
 
 const hasReview = review.id.length > 0;
 ---
@@ -65,12 +78,17 @@ const hasReview = review.id.length > 0;
 								<img src={heroImage} alt={review.properties.name} />
 							</div>
 						)}
-						{/* <div class="review-hero__image">
-							<img src={review.image} alt={review.title} />
-						</div> */}
+						
 						<div class="review-hero__info">
 							<h1 class="review-title">{review.properties.name}</h1>
 							<div class="review-meta">
+							<div>
+								<div class="review-quotes">
+									{quotes.map(({ name, quote }) => (
+										<p><strong>{name}:</strong> {quote}</p>
+									))}
+								</div>
+							</div>
 								<div class="review-rating">
 									<span class="rating-label">Rating:</span>
 									<span class="rating-value">{review.properties.rating}/10</span>
