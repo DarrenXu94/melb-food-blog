@@ -1,41 +1,40 @@
 ---
 import Layout from "../../layouts/Layout.astro";
 import CategoryCard from "../../components/CategoryCard.astro";
+import { getCategories } from "../../utils/api";
+import { categoriesToOptions } from "../../utils/mappers";
+import { capitalize } from "../../utils/string";
 
-// Mock data - in production this would come from your API
-const cuisineCategories = [
-  { name: "Italian", count: 24, color: "#e74c3c" },
-  { name: "Chinese", count: 18, color: "#f39c12" },
-  { name: "Japanese", count: 15, color: "#3498db" },
-  { name: "Thai", count: 12, color: "#2ecc71" },
-  { name: "Indian", count: 10, color: "#9b59b6" },
-  { name: "Mexican", count: 8, color: "#e67e22" },
-  { name: "French", count: 7, color: "#1abc9c" },
-  { name: "Spanish", count: 6, color: "#34495e" },
-  { name: "Modern Australian", count: 20, color: "#e74c3c" },
-  { name: "Middle Eastern", count: 5, color: "#f1c40f" },
-  { name: "Asian Fusion", count: 9, color: "#8e44ad" },
-  { name: "Mediterranean", count: 4, color: "#16a085" },
-];
+const categories = await getCategories();
 
-const locationCategories = [
-  { name: "CBD", count: 45 },
-  { name: "Fitzroy", count: 32 },
-  { name: "Carlton", count: 28 },
-  { name: "Southbank", count: 22 },
-  { name: "Richmond", count: 18 },
-  { name: "South Yarra", count: 15 },
-  { name: "St Kilda", count: 12 },
-  { name: "Collingwood", count: 10 },
-  { name: "Prahran", count: 8 },
-  { name: "Brunswick", count: 6 },
-  { name: "North Melbourne", count: 5 },
-  { name: "Port Melbourne", count: 4 },
-];
+const mappedCategories = categoriesToOptions(categories);
+
+const locations = mappedCategories.suburb.options;
+
+const cuisineTypes = mappedCategories.cuisineType.options;
+
+const locationCategories = locations
+  .map((location) => ({
+    name: location.name,
+  }))
+  .sort((a, b) => {
+    // Sort by name alphabetically
+    return a.name.localeCompare(b.name);
+  });
+
+const cuisineCategories = cuisineTypes
+  .map((cuisine) => ({
+    name: cuisine.name,
+    color: cuisine.color,
+  }))
+  .sort((a, b) => {
+    // Sort by name alphabetically
+    return a.name.localeCompare(b.name);
+  });
 
 // Sort by count (highest first)
-cuisineCategories.sort((a, b) => b.count - a.count);
-locationCategories.sort((a, b) => b.count - a.count);
+// cuisineCategories.sort((a, b) => b.count - a.count);
+// locationCategories.sort((a, b) => b.count - a.count);
 ---
 
 <Layout title="Restaurant Categories - Melbourne Food Blog">
@@ -63,8 +62,7 @@ locationCategories.sort((a, b) => b.count - a.count);
           {
             cuisineCategories.map((category) => (
               <CategoryCard
-                name={category.name}
-                count={category.count}
+                name={capitalize(category.name)}
                 type="cuisine"
                 href={`/category/cuisine/${category.name.toLowerCase().replace(/\s+/g, "-")}`}
                 color={category.color}
@@ -88,7 +86,6 @@ locationCategories.sort((a, b) => b.count - a.count);
             locationCategories.map((category) => (
               <CategoryCard
                 name={category.name}
-                count={category.count}
                 type="location"
                 href={`/category/location/${category.name.toLowerCase().replace(/\s+/g, "-")}`}
               />
@@ -108,12 +105,12 @@ locationCategories.sort((a, b) => b.count - a.count);
             <div class="stat-number">{locationCategories.length}</div>
             <div class="stat-label">Locations</div>
           </div>
-          <div class="stat-card">
+          <!-- <div class="stat-card">
             <div class="stat-number">
               {cuisineCategories.reduce((sum, cat) => sum + cat.count, 0)}
             </div>
             <div class="stat-label">Total Reviews</div>
-          </div>
+          </div> -->
         </div>
       </section>
     </div>
