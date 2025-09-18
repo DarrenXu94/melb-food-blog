@@ -1,7 +1,7 @@
 ---
 import Layout from "../../layouts/Layout.astro";
 import CategoryCard from "../../components/CategoryCard.astro";
-import { getCategories } from "../../utils/api";
+import { getAllReviews, getCategories } from "../../utils/api";
 import { categoriesToOptions } from "../../utils/mappers";
 import { capitalize } from "../../utils/string";
 
@@ -32,9 +32,9 @@ const cuisineCategories = cuisineTypes
     return a.name.localeCompare(b.name);
   });
 
-// Sort by count (highest first)
-// cuisineCategories.sort((a, b) => b.count - a.count);
-// locationCategories.sort((a, b) => b.count - a.count);
+const res = await getAllReviews();
+
+const count = res.reviews.length;
 ---
 
 <Layout title="Restaurant Categories - Melbourne Food Blog">
@@ -105,12 +105,12 @@ const cuisineCategories = cuisineTypes
             <div class="stat-number">{locationCategories.length}</div>
             <div class="stat-label">Locations</div>
           </div>
-          <!-- <div class="stat-card">
+          <div class="stat-card">
             <div class="stat-number">
-              {cuisineCategories.reduce((sum, cat) => sum + cat.count, 0)}
+              {count}
             </div>
             <div class="stat-label">Total Reviews</div>
-          </div> -->
+          </div>
         </div>
       </section>
     </div>

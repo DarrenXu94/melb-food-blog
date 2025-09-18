@@ -1,21 +1,35 @@
 ---
 import Layout from '../../../layouts/Layout.astro';
 import ReviewCard from '../../../components/ReviewCard.astro';
+import { getAllReviews } from '../../../utils/api';
+import { reviewDbRowToObject } from '../../../utils/mappers';
+import type { Review } from '../../../types/blog';
 
 // Define static paths for the dynamic route
 export async function getStaticPaths() {
-  const paths = [
-    // Cuisine categories
-    { params: { type: 'cuisine', id: 'italian' } },
-    { params: { type: 'cuisine', id: 'chinese' } },
-    { params: { type: 'cuisine', id: 'japanese' } },
-    { params: { type: 'cuisine', id: 'thai' } },
-    // Location categories
-    { params: { type: 'location', id: 'cbd' } },
-    { params: { type: 'location', id: 'fitzroy' } },
-    { params: { type: 'location', id: 'carlton' } },
-    { params: { type: 'location', id: 'southbank' } },
-  ];
+  const res = await getAllReviews();
+
+const reduceToCuisineAndLocation = res.reviews.reduce((acc, review) => {
+	const mappedReview = reviewDbRowToObject(review);
+	const cuisineTypes = mappedReview.properties.cuisineType || [];
+	const suburb = mappedReview.properties.suburb || 'Unknown';
+
+	cuisineTypes.forEach(cuisine => acc.cuisines.add(cuisine));
+	acc.locations.add(suburb);
+
+	return acc;
+}, {cuisines: new Set<string>(), locations: new Set<string>()} );
+
+	const paths = [
+		// Cuisine categories
+		...Array.from(reduceToCuisineAndLocation.cuisines).map(cuisine => ({
+			params: { type: 'cuisine', id: cuisine.toLowerCase() }
+		})),
+		// Location categories
+		...Array.from(reduceToCuisineAndLocation.locations).map(location => ({
+			params: { type: 'location', id: location.toLowerCase() }
+		}))
+	]
   
   return paths;
 }
@@ -23,90 +37,81 @@ export async function getStaticPaths() {
 // Get the category type and ID from the URL
 const { type, id } = Astro.params;
 
-// Mock data - in production this would come from your API
-const cuisineData: Record<string, any> = {
-	'italian': {
-		name: "Italian",
-		description: "Authentic Italian cuisine featuring fresh pasta, wood-fired pizzas, and traditional recipes passed down through generations.",
-		color: "#e74c3c",
-		reviews: []
-	},
-	'chinese': {
-		name: "Chinese",
-		description: "Traditional Chinese cuisine with modern interpretations, featuring dim sum, noodles, and regional specialties.",
-		color: "#f39c12",
-		reviews: [
-			
-		]
-	},
-	'japanese': {
-		name: "Japanese",
-		description: "Fresh sushi, ramen, and traditional Japanese dishes prepared with precision and attention to detail.",
-		color: "#3498db",
-		reviews: [
-			
-		]
-	},
-	'thai': {
-		name: "Thai",
-		description: "Authentic Thai flavors with perfect balance of sweet, sour, salty, and spicy elements.",
-		color: "#2ecc71",
-		reviews: [
-			
-		]
-	}
-};
+const res = await getAllReviews();
+const allReviews = res.reviews.map(reviewDbRowToObject);
 
-const locationData: Record<string, any> = {
-	'cbd': {
-		name: "CBD",
-		description: "The heart of Melbourne's dining scene, featuring everything from casual cafes to fine dining establishments.",
-		reviews: [
-		
-		]
-	},
-	'fitzroy': {
-		name: "Fitzroy",
-		description: "Melbourne's creative hub with trendy cafes, innovative restaurants, and a vibrant food scene.",
-		reviews: [
-			
-		]
-	},
-	'carlton': {
-		name: "Carlton",
-		description: "Home to Melbourne's Italian community with authentic trattorias and cozy cafes.",
-		reviews: [
-			
-		]
-	},
-	'southbank': {
-		name: "Southbank",
-		description: "Riverside dining with stunning city views and a mix of casual and upscale restaurants.",
-		reviews: [
-			
-		]
-	}
-};
+const reduceToCuisineAndLocation = allReviews.reduce((acc, review) => {
+	const cuisineTypes = review.properties.cuisineType || [];
+	const suburb = review.properties.suburb || 'Unknown';
+// group by cuisine types
+    cuisineTypes.forEach(cuisine => {
+      if (!acc.cuisines[cuisine]) acc.cuisines[cuisine] = [];
+      acc.cuisines[cuisine].push(review);
+    });
+
+    // group by suburb
+    if (!acc.locations[suburb]) acc.locations[suburb] = [];
+    acc.locations[suburb].push(review);
+
+    return acc;
+	
+}, {cuisines: {}, locations: {} } as {
+	cuisines: Record<string, Review[]>,
+	locations: Record<string, Review[]>
+});
+
+console.log(reduceToCuisineAndLocation, "reduceToCuisineAndLocation");
+
+const cuisineData = Object.keys(reduceToCuisineAndLocation.cuisines).map(cuisine => ({
+	name: cuisine,
+	description: `Explore the best ${cuisine} restaurants in Melbourne.`,
+	reviews: reduceToCuisineAndLocation.cuisines[cuisine]
+}));
+
+const locationData = Object.keys(reduceToCuisineAndLocation.locations).map(location => ({
+	name: location,
+	description: `Discover top-rated restaurants in ${location}, Melbourne.`,
+	reviews: reduceToCuisineAndLocation.locations[location]
+}));
+
+console.log(locationData, "locationData");
+
 
 // Get the appropriate data based on type and id
 let categoryData: any = null;
 let categoryName = "";
 let categoryDescription = "";
-let categoryReviews: any[] = [];
+let categoryReviews: Review[] = [];
 let categoryColor = "";
 
-if (type === 'cuisine' && id && cuisineData[id]) {
-	categoryData = cuisineData[id];
-	categoryName = categoryData.name;
-	categoryDescription = categoryData.description;
-	categoryReviews = categoryData.reviews;
-	categoryColor = categoryData.color;
-} else if (type === 'location' && id && locationData[id]) {
-	categoryData = locationData[id];
-	categoryName = categoryData.name;
-	categoryDescription = categoryData.description;
-	categoryReviews = categoryData.reviews;
-	categoryColor = "#3498db"; // Default color for locations
+if (type === 'cuisine' && id ) {
+
+	const findCuisine = cuisineData.find(cuisine => cuisine.name.toLowerCase() === id.toLowerCase());
+	if (!findCuisine) {
+		categoryData = null;
+	} else {
+		categoryData = findCuisine;
+		categoryName = categoryData.name;
+		categoryDescription = categoryData.description;
+		categoryReviews = categoryData.reviews;
+		categoryColor = "#e74c3c"; // Default color for cuisines
+	}
+
+	
+} else if (type === 'location' && id) {
+
+	const findLocation = locationData.find(location => location.name.toLowerCase() === id.toLowerCase());
+	if (!findLocation) {
+		categoryData = null;
+	} else {
+		categoryData = findLocation;
+		categoryName = categoryData.name;
+		categoryDescription = categoryData.description;
+		categoryReviews = categoryData.reviews;
+		categoryColor = "#3498db"; // Default color for locations
+
+	}
+
 }
 
 const hasCategory = categoryData !== null;
@@ -129,7 +134,7 @@ const hasCategory = categoryData !== null;
 								</div>
 								<div class="stat">
 									<span class="stat-number">
-										{(categoryReviews.reduce((sum, review) => sum + review.rating, 0) / categoryReviews.length).toFixed(1)}
+										{(categoryReviews.reduce((sum, review) => sum + parseFloat(review.properties.rating), 0) / categoryReviews.length).toFixed(1)}
 									</span>
 									<span class="stat-label">Average Rating</span>
 								</div>

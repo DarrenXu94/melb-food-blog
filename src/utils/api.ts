@@ -18,7 +18,9 @@ const API_BASE_URL = import.meta.env.NETLIFY_API_BASE_URL;
  */
 export async function getAllReviews(): Promise<GetAllReviewsResponse> {
   try {
-    const response = await fetch(`${API_BASE_URL}/getAllReviews`);
+    const response = await fetch(`${API_BASE_URL}/getAllReviews`, {
+      cache: "force-cache",
+    });
 
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
@@ -37,7 +39,9 @@ export async function getAllReviews(): Promise<GetAllReviewsResponse> {
  */
 export async function getCategories(): Promise<GetCategoriesResponse> {
   try {
-    const response = await fetch(`${API_BASE_URL}/getCategories`);
+    const response = await fetch(`${API_BASE_URL}/getCategories`, {
+      cache: "force-cache",
+    });
 
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
@@ -61,7 +65,8 @@ export async function getMarkdownFromReview(
     const response = await fetch(
       `${API_BASE_URL}/getMarkdownFromReview?pageId=${encodeURIComponent(
         pageId
-      )}`
+      )}`,
+      { cache: "force-cache" }
     );
 
     if (!response.ok) {
