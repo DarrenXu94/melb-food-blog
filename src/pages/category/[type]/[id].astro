@@ -2,7 +2,7 @@
 import Layout from '../../../layouts/Layout.astro';
 import ReviewCard from '../../../components/ReviewCard.astro';
 import { getAllReviews } from '../../../utils/api';
-import { reviewDbRowToObject } from '../../../utils/mappers';
+import { allReviewsMappedToLocationAndCuisine, reviewDbRowToObject } from '../../../utils/mappers';
 import type { Review } from '../../../types/blog';
 
 // Define static paths for the dynamic route
@@ -38,29 +38,8 @@ const reduceToCuisineAndLocation = res.reviews.reduce((acc, review) => {
 const { type, id } = Astro.params;
 
 const res = await getAllReviews();
-const allReviews = res.reviews.map(reviewDbRowToObject);
 
-const reduceToCuisineAndLocation = allReviews.reduce((acc, review) => {
-	const cuisineTypes = review.properties.cuisineType || [];
-	const suburb = review.properties.suburb || 'Unknown';
-// group by cuisine types
-    cuisineTypes.forEach(cuisine => {
-      if (!acc.cuisines[cuisine]) acc.cuisines[cuisine] = [];
-      acc.cuisines[cuisine].push(review);
-    });
-
-    // group by suburb
-    if (!acc.locations[suburb]) acc.locations[suburb] = [];
-    acc.locations[suburb].push(review);
-
-    return acc;
-	
-}, {cuisines: {}, locations: {} } as {
-	cuisines: Record<string, Review[]>,
-	locations: Record<string, Review[]>
-});
-
-console.log(reduceToCuisineAndLocation, "reduceToCuisineAndLocation");
+const reduceToCuisineAndLocation = allReviewsMappedToLocationAndCuisine(res)
 
 const cuisineData = Object.keys(reduceToCuisineAndLocation.cuisines).map(cuisine => ({
 	name: cuisine,
@@ -74,7 +53,6 @@ const locationData = Object.keys(reduceToCuisineAndLocation.locations).map(locat
 	reviews: reduceToCuisineAndLocation.locations[location]
 }));
 
-console.log(locationData, "locationData");
 
 
 // Get the appropriate data based on type and id

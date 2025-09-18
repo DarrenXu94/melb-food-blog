@@ -2,6 +2,7 @@ import type { Review, ReviewProperties } from "../types/blog";
 import type {
   Category,
   CategoryOption,
+  GetAllReviewsResponse,
   GetCategoriesResponse,
   ReviewDatabaseRow,
 } from "../types/notion";
@@ -32,4 +33,33 @@ export const categoriesToOptions = (res: GetCategoriesResponse) => {
     };
     return acc;
   }, {} as Record<string, { type: string; options: CategoryOption[] }>);
+};
+
+export const allReviewsMappedToLocationAndCuisine = (
+  reviews: GetAllReviewsResponse
+) => {
+  const allReviews = reviews.reviews.map(reviewDbRowToObject);
+
+  const reduceToCuisineAndLocation = allReviews.reduce(
+    (acc, review) => {
+      const cuisineTypes = review.properties.cuisineType || [];
+      const suburb = review.properties.suburb || "Unknown";
+      // group by cuisine types
+      cuisineTypes.forEach((cuisine) => {
+        if (!acc.cuisines[cuisine]) acc.cuisines[cuisine] = [];
+        acc.cuisines[cuisine].push(review);
+      });
+
+      // group by suburb
+      if (!acc.locations[suburb]) acc.locations[suburb] = [];
+      acc.locations[suburb].push(review);
+
+      return acc;
+    },
+    { cuisines: {}, locations: {} } as {
+      cuisines: Record<string, Review[]>;
+      locations: Record<string, Review[]>;
+    }
+  );
+  return reduceToCuisineAndLocation;
 };

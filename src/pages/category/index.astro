@@ -1,38 +1,33 @@
 ---
 import Layout from "../../layouts/Layout.astro";
 import CategoryCard from "../../components/CategoryCard.astro";
-import { getAllReviews, getCategories } from "../../utils/api";
-import { categoriesToOptions } from "../../utils/mappers";
+import { getAllReviews } from "../../utils/api";
+import { allReviewsMappedToLocationAndCuisine } from "../../utils/mappers";
 import { capitalize } from "../../utils/string";
 
-const categories = await getCategories();
-
-const mappedCategories = categoriesToOptions(categories);
-
-const locations = mappedCategories.suburb.options;
-
-const cuisineTypes = mappedCategories.cuisineType.options;
-
-const locationCategories = locations
-  .map((location) => ({
-    name: location.name,
-  }))
-  .sort((a, b) => {
-    // Sort by name alphabetically
-    return a.name.localeCompare(b.name);
-  });
-
-const cuisineCategories = cuisineTypes
-  .map((cuisine) => ({
-    name: cuisine.name,
-    color: cuisine.color,
-  }))
-  .sort((a, b) => {
-    // Sort by name alphabetically
-    return a.name.localeCompare(b.name);
-  });
-
 const res = await getAllReviews();
+
+const reduceToCuisineAndLocation = allReviewsMappedToLocationAndCuisine(res);
+
+const cuisineCategories = Object.keys(reduceToCuisineAndLocation.cuisines)
+  .map((cuisine) => ({
+    name: cuisine,
+    count: reduceToCuisineAndLocation.cuisines[cuisine].length,
+  }))
+  .sort((a, b) => {
+    // Sort by name alphabetically
+    return a.name.localeCompare(b.name);
+  });
+
+const locationCategories = Object.keys(reduceToCuisineAndLocation.locations)
+  .map((location) => ({
+    name: location,
+    count: reduceToCuisineAndLocation.locations[location].length,
+  }))
+  .sort((a, b) => {
+    // Sort by name alphabetically
+    return a.name.localeCompare(b.name);
+  });
 
 const count = res.reviews.length;
 ---
@@ -64,8 +59,8 @@ const count = res.reviews.length;
               <CategoryCard
                 name={capitalize(category.name)}
                 type="cuisine"
+                count={category.count}
                 href={`/category/cuisine/${category.name.toLowerCase().replace(/\s+/g, "-")}`}
-                color={category.color}
               />
             ))
           }
@@ -87,6 +82,7 @@ const count = res.reviews.length;
               <CategoryCard
                 name={category.name}
                 type="location"
+                count={category.count}
                 href={`/category/location/${category.name.toLowerCase().replace(/\s+/g, "-")}`}
               />
             ))
