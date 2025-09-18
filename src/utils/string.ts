@@ -18,3 +18,8 @@ export function toCamelCaseAndRemoveSpecialChars(str: string) {
 
   return camelCaseStr;
 }
+
+export function capitalize(str: string) {
+  // Capitalize the first letter of the string and return it
+  return str.charAt(0).toUpperCase() + str.slice(1);
+}

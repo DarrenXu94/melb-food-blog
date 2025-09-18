@@ -3,9 +3,9 @@ import Layout from "../layouts/Layout.astro";
 import ReviewCard from "../components/ReviewCard.astro";
 import CategoryCard from "../components/CategoryCard.astro";
 
-import { getAllReviews } from "../utils/api";
-import { reviewDbRowToObject } from "../utils/mappers";
-import { toCamelCaseAndRemoveSpecialChars } from "../utils/string";
+import { getAllReviews, getCategories } from "../utils/api";
+import { categoriesToOptions, reviewDbRowToObject } from "../utils/mappers";
+import { capitalize, toCamelCaseAndRemoveSpecialChars } from "../utils/string";
 
 const res = await getAllReviews();
 
@@ -22,23 +22,13 @@ const sortedTopRatedReviews = res.reviews
   )
   .slice(0, 3);
 
-const cuisineTypes = [
-  { name: "Italian", count: 24, color: "#e74c3c" },
-  { name: "Chinese", count: 18, color: "#f39c12" },
-  { name: "Japanese", count: 15, color: "#3498db" },
-  { name: "Thai", count: 12, color: "#2ecc71" },
-  { name: "Indian", count: 10, color: "#9b59b6" },
-  { name: "Mexican", count: 8, color: "#e67e22" },
-];
+const categories = await getCategories();
 
-const locations = [
-  { name: "CBD", count: 45 },
-  { name: "Fitzroy", count: 32 },
-  { name: "Carlton", count: 28 },
-  { name: "Southbank", count: 22 },
-  { name: "Richmond", count: 18 },
-  { name: "South Yarra", count: 15 },
-];
+const mappedCategories = categoriesToOptions(categories);
+
+const locations = mappedCategories.suburb.options;
+
+const cuisineTypes = mappedCategories.cuisineType.options;
 ---
 
 <Layout title="Melbourne Food Blog - Discover Amazing Restaurants">
@@ -83,8 +73,7 @@ const locations = [
         {
           cuisineTypes.map((cuisine) => (
             <CategoryCard
-              name={cuisine.name}
-              count={cuisine.count}
+              name={capitalize(cuisine.name)}
               type="cuisine"
               href={`/category/cuisine/${cuisine.name.toLowerCase()}`}
               color={cuisine.color}
@@ -104,7 +93,6 @@ const locations = [
           locations.map((location) => (
             <CategoryCard
               name={location.name}
-              count={location.count}
               type="location"
               href={`/category/location/${location.name.toLowerCase()}`}
             />

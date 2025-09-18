@@ -42,6 +42,8 @@ export interface CategoryOption {
   name: string;
   /** The color associated with this option */
   color: string;
+  /** The option ID */
+  id: string;
 }
 
 /**
