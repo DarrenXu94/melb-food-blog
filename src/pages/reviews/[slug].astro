@@ -130,7 +130,7 @@ const hasReview = review.id.length > 0;
 					<h2 class="related-title">More Reviews</h2>
 					<div class="related-links">
 						<a href="/reviews" class="btn btn--outline">View All Reviews</a>
-						<a href={`/reviews?cuisine=${review.properties.cuisineType[0].toLowerCase()}`} class="btn btn--primary">
+						<a href={`/category/cuisine/${review.properties.cuisineType[0].toLowerCase()}`} class="btn btn--primary">
 							More {review.properties.cuisineType[0].toLowerCase()} Restaurants
 						</a>
 					</div>

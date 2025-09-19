@@ -1,17 +1,9 @@
 ---
 import Layout from "../../layouts/Layout.astro";
 import ReviewCard from "../../components/ReviewCard.astro";
-import FilterSection from "../../components/FilterSection.astro";
-import type { Review } from "../../types/blog";
 import { getAllReviews } from "../../utils/api";
 import { reviewDbRowToObject } from "../../utils/mappers";
 import { toCamelCaseAndRemoveSpecialChars } from "../../utils/string";
-
-// Get query parameters
-const url = new URL(Astro.request.url);
-const cuisine = url.searchParams.get("cuisine") || "";
-const location = url.searchParams.get("location") || "";
-const price = url.searchParams.get("price") || "";
 
 const res = await getAllReviews();
 const allReviews = res.reviews.map(reviewDbRowToObject);
@@ -21,26 +13,6 @@ let filteredReviews = allReviews.map((review) => ({
   ...review,
   href: `/reviews/${toCamelCaseAndRemoveSpecialChars(review.properties.name)}`,
 }));
-
-if (cuisine) {
-  filteredReviews = filteredReviews.filter((review) =>
-    review.properties.cuisineType.some((c) =>
-      c.toLowerCase().includes(cuisine.toLowerCase())
-    )
-  );
-}
-
-if (location) {
-  filteredReviews = filteredReviews.filter((review) =>
-    review.properties.suburb.toLowerCase().includes(location.toLowerCase())
-  );
-}
-
-if (price) {
-  filteredReviews = filteredReviews.filter(
-    (review) => review.properties.priceRange === price
-  );
-}
 
 // Sort by rating (highest first)
 filteredReviews.sort(
@@ -60,12 +32,7 @@ filteredReviews.sort(
 
   <div class="page-content">
     <div class="container">
-      <div class="grid grid--sidebar">
-        <!-- Filters Sidebar -->
-        <aside class="filters-sidebar">
-          <FilterSection cuisine={cuisine} location={location} price={price} />
-        </aside>
-
+      <div class="grid">
         <!-- Reviews Grid -->
         <main class="reviews-main">
           <div class="reviews-header">

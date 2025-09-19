@@ -4,6 +4,7 @@ import ReviewCard from '../../../components/ReviewCard.astro';
 import { getAllReviews } from '../../../utils/api';
 import { allReviewsMappedToLocationAndCuisine, reviewDbRowToObject } from '../../../utils/mappers';
 import type { Review } from '../../../types/blog';
+import { capitalize } from '../../../utils/string';
 
 // Define static paths for the dynamic route
 export async function getStaticPaths() {
@@ -69,7 +70,7 @@ if (type === 'cuisine' && id ) {
 		categoryData = null;
 	} else {
 		categoryData = findCuisine;
-		categoryName = categoryData.name;
+		categoryName = capitalize(categoryData.name);
 		categoryDescription = categoryData.description;
 		categoryReviews = categoryData.reviews;
 		categoryColor = "#e74c3c"; // Default color for cuisines
@@ -135,7 +136,6 @@ const hasCategory = categoryData !== null;
 							{categoryReviews.length} {categoryReviews.length === 1 ? 'Restaurant' : 'Restaurants'} in {categoryName}
 						</h2>
 						<div class="reviews-actions">
-							<a href={`/search?${type}=${id}`} class="btn btn--outline">Search More</a>
 							<a href="/category" class="btn btn--primary">Browse Categories</a>
 						</div>
 					</div>
