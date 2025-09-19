@@ -4,7 +4,11 @@ import ReviewCard from "../components/ReviewCard.astro";
 import CategoryCard from "../components/CategoryCard.astro";
 
 import { getAllReviews, getCategories } from "../utils/api";
-import { categoriesToOptions, reviewDbRowToObject } from "../utils/mappers";
+import {
+  allReviewsMappedToLocationAndCuisine,
+  categoriesToOptions,
+  reviewDbRowToObject,
+} from "../utils/mappers";
 import { capitalize, toCamelCaseAndRemoveSpecialChars } from "../utils/string";
 
 const res = await getAllReviews();
@@ -22,13 +26,27 @@ const sortedTopRatedReviews = res.reviews
   )
   .slice(0, 3);
 
-const categories = await getCategories();
+// const categories = await getCategories();
 
-const mappedCategories = categoriesToOptions(categories);
+// const mappedCategories = categoriesToOptions(categories);
 
-const locations = mappedCategories.suburb.options;
+// const locations = mappedCategories.suburb.options;
 
-const cuisineTypes = mappedCategories.cuisineType.options;
+// const cuisineTypes = mappedCategories.cuisineType.options;
+
+const reduceToCuisineAndLocation = allReviewsMappedToLocationAndCuisine(res);
+const cuisineTypes = Object.keys(reduceToCuisineAndLocation.cuisines).map(
+  (cuisine) => ({
+    name: cuisine,
+    count: reduceToCuisineAndLocation.cuisines[cuisine].length,
+  })
+);
+const locations = Object.keys(reduceToCuisineAndLocation.locations).map(
+  (location) => ({
+    name: location,
+    count: reduceToCuisineAndLocation.locations[location].length,
+  })
+);
 ---
 
 <Layout title="Melbourne Food Blog - Discover Amazing Restaurants">
@@ -73,10 +91,10 @@ const cuisineTypes = mappedCategories.cuisineType.options;
         {
           cuisineTypes.map((cuisine) => (
             <CategoryCard
+              count={cuisine.count}
               name={capitalize(cuisine.name)}
               type="cuisine"
               href={`/category/cuisine/${cuisine.name.toLowerCase()}`}
-              color={cuisine.color}
             />
           ))
         }
@@ -92,6 +110,7 @@ const cuisineTypes = mappedCategories.cuisineType.options;
         {
           locations.map((location) => (
             <CategoryCard
+              count={location.count}
               name={location.name}
               type="location"
               href={`/category/location/${location.name.toLowerCase()}`}

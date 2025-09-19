@@ -1,7 +1,6 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import ReviewCard from "../components/ReviewCard.astro";
-import FilterSection from "../components/FilterSection.astro";
 import type { Review } from "../types/blog";
 
 // Get query parameters
@@ -89,14 +88,6 @@ const hasSearchCriteria = query || cuisine || location || price;
                 >Search</button
               >
             </div>
-          </div>
-
-          <div class="search-form__filters">
-            <FilterSection
-              cuisine={cuisine}
-              location={location}
-              price={price}
-            />
           </div>
         </form>
       </section>
