@@ -26,27 +26,26 @@ const sortedTopRatedReviews = res.reviews
   )
   .slice(0, 3);
 
-// const categories = await getCategories();
-
-// const mappedCategories = categoriesToOptions(categories);
-
-// const locations = mappedCategories.suburb.options;
-
-// const cuisineTypes = mappedCategories.cuisineType.options;
-
 const reduceToCuisineAndLocation = allReviewsMappedToLocationAndCuisine(res);
-const cuisineTypes = Object.keys(reduceToCuisineAndLocation.cuisines).map(
-  (cuisine) => ({
+const cuisineTypes = Object.keys(reduceToCuisineAndLocation.cuisines)
+  .map((cuisine) => ({
     name: cuisine,
     count: reduceToCuisineAndLocation.cuisines[cuisine].length,
+  }))
+  .sort((a, b) => {
+    return a.count < b.count ? 1 : -1;
   })
-);
-const locations = Object.keys(reduceToCuisineAndLocation.locations).map(
-  (location) => ({
+  .slice(0, 6);
+
+const locations = Object.keys(reduceToCuisineAndLocation.locations)
+  .map((location) => ({
     name: location,
     count: reduceToCuisineAndLocation.locations[location].length,
+  }))
+  .sort((a, b) => {
+    return a.count < b.count ? 1 : -1;
   })
-);
+  .slice(0, 6);
 ---
 
 <Layout title="Melbourne Food Blog - Discover Amazing Restaurants">
@@ -86,7 +85,7 @@ const locations = Object.keys(reduceToCuisineAndLocation.locations).map(
   <!-- Cuisine Types -->
   <section class="section section--alt">
     <div class="container">
-      <h2 class="section__title">Explore by Cuisine</h2>
+      <h2 class="section__title">Most Reviewed Cuisines</h2>
       <div class="grid grid--3-cols">
         {
           cuisineTypes.map((cuisine) => (
@@ -105,7 +104,7 @@ const locations = Object.keys(reduceToCuisineAndLocation.locations).map(
   <!-- Locations -->
   <section class="section">
     <div class="container">
-      <h2 class="section__title">Popular Locations</h2>
+      <h2 class="section__title">Most Reviewed Locations</h2>
       <div class="grid grid--3-cols">
         {
           locations.map((location) => (
