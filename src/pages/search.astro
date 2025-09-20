@@ -2,6 +2,7 @@
 import Layout from "../layouts/Layout.astro";
 import ReviewCard from "../components/ReviewCard.astro";
 import type { Review } from "../types/blog";
+import SearchComponent from "../components/SearchComponent.astro";
 
 // Get query parameters
 const url = new URL(Astro.request.url);
@@ -72,7 +73,7 @@ const hasSearchCriteria = query || cuisine || location || price;
   <div class="page-content">
     <div class="container">
       <!-- Search Form -->
-      <section class="search-section">
+      <!-- <section class="search-section">
         <form method="GET" class="search-form">
           <div class="search-form__main">
             <div class="search-input-group">
@@ -90,83 +91,16 @@ const hasSearchCriteria = query || cuisine || location || price;
             </div>
           </div>
         </form>
-      </section>
+      </section> -->
+
+      <SearchComponent />
 
       <!-- Search Results -->
       <section class="results-section">
         <div class="results-header">
-          <h2 class="results-title">
-            {
-              hasSearchCriteria ? (
-                <>
-                  {filteredReviews.length}{" "}
-                  {filteredReviews.length === 1 ? "Result" : "Results"} Found
-                  {query && <span class="search-query"> for "{query}"</span>}
-                </>
-              ) : (
-                "All Restaurants"
-              )
-            }
-          </h2>
-
-          {
-            filteredReviews.length === 0 && hasSearchCriteria && (
-              <div class="no-results">
-                <p>
-                  No restaurants match your search criteria. Try adjusting your
-                  search terms or filters.
-                </p>
-                <a href="/search" class="btn btn--outline">
-                  Clear Search
-                </a>
-              </div>
-            )
-          }
+          <h2 class="results-title">Search Results</h2>
+          <div class="grid grid--3-cols" id="resultsGrid"></div>
         </div>
-
-        {
-          filteredReviews.length > 0 && (
-            <div class="grid grid--3-cols">
-              {filteredReviews.map((review) => (
-                <ReviewCard {...review} size="medium" />
-              ))}
-            </div>
-          )
-        }
-
-        {
-          !hasSearchCriteria && (
-            <div class="search-suggestions">
-              <h3 class="suggestions-title">Popular Searches</h3>
-              <div class="suggestions-grid">
-                <a href="/search?q=italian" class="suggestion-tag">
-                  Italian
-                </a>
-                <a href="/search?q=chinese" class="suggestion-tag">
-                  Chinese
-                </a>
-                <a href="/search?q=japanese" class="suggestion-tag">
-                  Japanese
-                </a>
-                <a href="/search?q=thai" class="suggestion-tag">
-                  Thai
-                </a>
-                <a href="/search?q=cbd" class="suggestion-tag">
-                  CBD
-                </a>
-                <a href="/search?q=fitzroy" class="suggestion-tag">
-                  Fitzroy
-                </a>
-                <a href="/search?q=budget" class="suggestion-tag">
-                  Budget Friendly
-                </a>
-                <a href="/search?q=fine dining" class="suggestion-tag">
-                  Fine Dining
-                </a>
-              </div>
-            </div>
-          )
-        }
       </section>
     </div>
   </div>
