@@ -4,7 +4,7 @@ import ReviewCard from '../../../components/ReviewCard.astro';
 import { getAllReviews } from '../../../utils/api';
 import { allReviewsMappedToLocationAndCuisine, reviewDbRowToObject } from '../../../utils/mappers';
 import type { Review } from '../../../types/blog';
-import { capitalize } from '../../../utils/string';
+import { capitalize, toCamelCaseAndRemoveSpecialChars } from '../../../utils/string';
 
 // Define static paths for the dynamic route
 export async function getStaticPaths() {
@@ -73,6 +73,7 @@ if (type === 'cuisine' && id ) {
 		categoryName = capitalize(categoryData.name);
 		categoryDescription = categoryData.description;
 		categoryReviews = categoryData.reviews;
+		console.log(categoryReviews)
 		categoryColor = "#e74c3c"; // Default color for cuisines
 	}
 
@@ -142,7 +143,7 @@ const hasCategory = categoryData !== null;
 
 					<div class="grid grid--3-cols">
 						{categoryReviews.map((review) => (
-							<ReviewCard {...review} size="medium" />
+							<ReviewCard {...review} href={`/reviews/${toCamelCaseAndRemoveSpecialChars(review.properties.name)}`} size="medium" />
 						))}
 					</div>
 				</div>
