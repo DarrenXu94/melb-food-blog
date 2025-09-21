@@ -94,9 +94,24 @@ const hasReview = review.id.length > 0;
 									<span class="rating-value">{review.properties.rating}/10</span>
 								</div>
 								<div class="review-details">
-									<span class="cuisine">{review.properties.cuisineType.map((cuisine) => capitalize(cuisine)).join(" / ")}</span>
-									<span class="location">{review.properties.suburb}</span>
-									<span class="price">{review.properties.priceRange}</span>
+									{/* <span class="cuisine">{review.properties.cuisineType.map((cuisine) => capitalize(cuisine)).join(" / ")}</span> */}
+									{review.properties.cuisineType.map((cuisine) => (
+										<span class="cuisine" >
+											<a href={`/category/cuisine/${cuisine.toLowerCase().replace(/\s+/g, "-")}`}>
+
+											{capitalize(cuisine)}
+											</a>
+										</span>
+									))}
+									<span class="location">
+										<a href={`/category/location/${review.properties.suburb.toLowerCase().replace(/\s+/g, "-")}`}>
+
+										{review.properties.suburb}
+										</a>
+										</span>
+									<span class="price">
+										{review.properties.priceRange}
+										</span>
 								</div>
 							</div>
 						</div>
