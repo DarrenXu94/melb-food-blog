@@ -2,7 +2,7 @@
 import Layout from '../../layouts/Layout.astro';
 import { getAllReviews, getMarkdownFromReview } from '../../utils/api';
 import { reviewDbRowToObject } from '../../utils/mappers';
-import { toCamelCaseAndRemoveSpecialChars } from '../../utils/string';
+import { capitalize, toCamelCaseAndRemoveSpecialChars } from '../../utils/string';
 
 // Define static paths for the dynamic route
 export async function getStaticPaths() {
@@ -94,7 +94,7 @@ const hasReview = review.id.length > 0;
 									<span class="rating-value">{review.properties.rating}/10</span>
 								</div>
 								<div class="review-details">
-									<span class="cuisine">{review.properties.cuisineType}</span>
+									<span class="cuisine">{review.properties.cuisineType.map((cuisine) => capitalize(cuisine)).join(" / ")}</span>
 									<span class="location">{review.properties.suburb}</span>
 									<span class="price">{review.properties.priceRange}</span>
 								</div>
@@ -131,7 +131,7 @@ const hasReview = review.id.length > 0;
 					<div class="related-links">
 						<a href="/reviews" class="btn btn--outline">View All Reviews</a>
 						<a href={`/category/cuisine/${review.properties.cuisineType[0].toLowerCase()}`} class="btn btn--primary">
-							More {review.properties.cuisineType[0].toLowerCase()} Restaurants
+							More {capitalize(review.properties.cuisineType[0].toLowerCase())} Restaurants
 						</a>
 					</div>
 				</div>

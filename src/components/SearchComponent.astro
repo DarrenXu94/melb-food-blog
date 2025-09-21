@@ -25,25 +25,72 @@ const mappedReviews = res.reviews.map(reviewDbRowToObject);
   </form>
 </section>
 
-<script
-  define:vars={{
-    reviews: mappedReviews,
-  }}
->
-  console.log("Reviews loaded:", reviews);
+<span id="data-reviews" data-reviews={JSON.stringify(mappedReviews)}></span>
 
+<script>
+  import type { Review } from "../types/blog";
+  import { toCamelCaseAndRemoveSpecialChars } from "../utils/string";
   // Check if the current URL has any query params
   const url = new URL(window.location.href);
   const params = new URLSearchParams(url.search);
   const query = params.get("q");
 
-  console.log("Current search query:", query);
-
-  if (query) {
-    document.getElementById("searchInput").value = query;
+  const id = document.getElementById("data-reviews");
+  if (!id) {
+    console.error("Data element not found");
   }
 
-  const searchForm = document.getElementById("searchForm");
+  const reviews = JSON.parse(
+    id ? (id.getAttribute("data-reviews") as string) : ""
+  ) as Review[];
+
+  console.log("Current search query:", query);
+
+  const performSearch = (term: string) => {
+    const filteredReviews = reviews.filter((review) => {
+      return (
+        review.properties.name.toLowerCase().includes(term) ||
+        review.properties.cuisineType.some((cuisine) =>
+          cuisine.toLowerCase().includes(term)
+        ) ||
+        review.properties.suburb.toLowerCase().includes(term)
+      );
+    });
+    const resultsGrid = document.getElementById(
+      "resultsGrid"
+    ) as HTMLDivElement;
+    resultsGrid.innerHTML = ""; // Clear previous results
+    filteredReviews.forEach((review) => {
+      const reviewCard = document.createElement("div");
+      reviewCard.className = "review-card";
+      reviewCard.innerHTML = `
+        <h3>${review.properties.name}</h3>
+        <p>Cuisine: ${review.properties.cuisineType.join(", ")}</p>
+        <p>Location: ${review.properties.suburb}</p>
+        <p>Rating: ${review.properties.rating}/10</p>
+        <a href="/reviews/${toCamelCaseAndRemoveSpecialChars(review.properties.name)}" class="btn btn--outline">View Review</a>
+      `;
+      resultsGrid.appendChild(reviewCard);
+    });
+
+    if (filteredReviews.length === 0) {
+      resultsGrid.innerHTML =
+        "<p class='search-no-results'>No results found.</p>";
+    }
+  };
+
+  if (query) {
+    const searchInput = document.getElementById(
+      "searchInput"
+    ) as HTMLInputElement;
+    searchInput.value = query;
+    // Wait for the DOM to be fully loaded before performing the search
+    window.requestAnimationFrame(() => {
+      performSearch(query.toLowerCase());
+    });
+  }
+
+  const searchForm = document.getElementById("searchForm") as HTMLFormElement;
   searchForm.addEventListener("submit", (event) => {
     event.preventDefault();
 
@@ -54,38 +101,38 @@ const mappedReviews = res.reviews.map(reviewDbRowToObject);
     params.set("q", input.value);
     window.history.replaceState({}, "", `${url.pathname}?${params}`);
 
-    const filteredReviews = reviews.filter((review) => {
-      const query = event.target.q.value.toLowerCase();
-      return (
-        review.properties.name.toLowerCase().includes(query) ||
-        review.properties.cuisineType.some((cuisine) =>
-          cuisine.toLowerCase().includes(query)
-        ) ||
-        review.properties.suburb.toLowerCase().includes(query)
-      );
-    });
-
-    console.log("Filtered reviews:", filteredReviews);
-
-    const resultsGrid = document.getElementById("resultsGrid");
-    resultsGrid.innerHTML = ""; // Clear previous results
-    filteredReviews.forEach((review) => {
-      const reviewCard = document.createElement("div");
-      reviewCard.className = "review-card";
-      reviewCard.innerHTML = `
-        <h3>${review.properties.name}</h3>
-        <p>Cuisine: ${review.properties.cuisineType.join(", ")}</p>
-        <p>Location: ${review.properties.suburb}</p>
-        <p>Rating: ${review.properties.rating}/10</p>
-        <a href="/reviews/${review.id}" class="btn btn--outline">View Review</a>
-      `;
-      resultsGrid.appendChild(reviewCard);
-    });
+    performSearch(input.value.toLowerCase());
   });
 
-  const input = document.getElementById("searchInput");
+  const input = document.getElementById("searchInput") as HTMLInputElement;
   input.addEventListener("input", (event) => {
+    if (!(event.target instanceof HTMLInputElement)) return;
     const query = event.target.value.toLowerCase();
     console.log("Search query:", query);
   });
 </script>
+
+<style>
+  .search-form__main {
+    margin-bottom: var(--spacing-6);
+  }
+
+  .search-input-group {
+    display: flex;
+    gap: var(--spacing-4);
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .search-input {
+    flex: 1;
+    font-size: var(--font-size-lg);
+    padding: var(--spacing-4) var(--spacing-6);
+  }
+</style>
+
+<style is:global>
+  .search-no-results {
+    grid-column: span 3;
+  }
+</style>
