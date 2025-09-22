@@ -3,7 +3,10 @@ import Layout from "../../layouts/Layout.astro";
 import CategoryCard from "../../components/CategoryCard.astro";
 import { getAllReviews } from "../../utils/api";
 import { allReviewsMappedToLocationAndCuisine } from "../../utils/mappers";
-import { capitalize } from "../../utils/string";
+import {
+  capitalize,
+  toCamelCaseAndRemoveSpecialChars,
+} from "../../utils/string";
 
 const res = await getAllReviews();
 
@@ -60,7 +63,7 @@ const count = res.reviews.length;
                 name={capitalize(category.name)}
                 type="cuisine"
                 count={category.count}
-                href={`/category/cuisine/${category.name.toLowerCase().replace(/\s+/g, "-")}`}
+                href={`/category/cuisine/${toCamelCaseAndRemoveSpecialChars(category.name)}`}
               />
             ))
           }

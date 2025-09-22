@@ -5,6 +5,7 @@ import { getAllReviews } from '../../../utils/api';
 import { allReviewsMappedToLocationAndCuisine, reviewDbRowToObject } from '../../../utils/mappers';
 import type { Review } from '../../../types/blog';
 import { capitalize, toCamelCaseAndRemoveSpecialChars } from '../../../utils/string';
+import { cuisines } from '../../../utils/icon';
 
 // Define static paths for the dynamic route
 export async function getStaticPaths() {
@@ -24,11 +25,11 @@ const reduceToCuisineAndLocation = res.reviews.reduce((acc, review) => {
 	const paths = [
 		// Cuisine categories
 		...Array.from(reduceToCuisineAndLocation.cuisines).map(cuisine => ({
-			params: { type: 'cuisine', id: cuisine.toLowerCase() }
+			params: { type: 'cuisine', id: toCamelCaseAndRemoveSpecialChars(cuisine) }
 		})),
 		// Location categories
 		...Array.from(reduceToCuisineAndLocation.locations).map(location => ({
-			params: { type: 'location', id: location.toLowerCase() }
+			params: { type: 'location', id: toCamelCaseAndRemoveSpecialChars(location) }
 		}))
 	]
   
@@ -65,7 +66,8 @@ let categoryColor = "";
 
 if (type === 'cuisine' && id ) {
 
-	const findCuisine = cuisineData.find(cuisine => cuisine.name.toLowerCase() === id.toLowerCase());
+	const findCuisine = cuisineData.find(cuisine => toCamelCaseAndRemoveSpecialChars(cuisine.name).toLowerCase() === toCamelCaseAndRemoveSpecialChars(id).toLowerCase());
+
 	if (!findCuisine) {
 		categoryData = null;
 	} else {
@@ -121,7 +123,11 @@ const hasCategory = categoryData !== null;
 						</div>
 						<div class="category-visual" style="background-color: {categoryColor}20;">
 							<div class="category-icon" style="background-color: {categoryColor};">
-								{type === 'cuisine' ? '🍽️' : '📍'}
+								{type === 'cuisine' ? cuisines[toCamelCaseAndRemoveSpecialChars(categoryName).toLowerCase()] && (
+								<div class="category-icon">
+									{cuisines[toCamelCaseAndRemoveSpecialChars(categoryName).toLowerCase()].icon}
+								</div>
+							) : '📍'}
 							</div>
 						</div>
 					</div>
