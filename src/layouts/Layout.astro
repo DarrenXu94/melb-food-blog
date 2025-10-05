@@ -8,6 +8,8 @@ const {
   title = "Melbourne Food Blog",
   description = "Discover the best restaurants and food experiences in Melbourne",
 } = Astro.props;
+
+const year = new Date().getFullYear();
 ---
 
 <!doctype html>
@@ -23,9 +25,13 @@ const {
   <body>
     <nav class="nav">
       <div class="container nav__container">
-        <a href="/" class="nav__brand">🍽️ Melb Food</a>
+        <div class="nav__brand-container">
+          <a href="/" class="nav__brand">
+            <h1>TWO HUNGRY HIPPOS</h1>
+          </a>
+        </div>
 
-        <div class="nav__search">
+        <!-- <div class="nav__search">
           <form action="/search" method="GET" class="flex flex--gap-2">
             <input
               type="search"
@@ -38,12 +44,13 @@ const {
               >Search</button
             >
           </form>
-        </div>
+        </div> -->
 
         <ul class="nav__links">
           <li><a href="/" class="nav__link">Home</a></li>
           <li><a href="/reviews" class="nav__link">Reviews</a></li>
           <li><a href="/category" class="nav__link">Categories</a></li>
+          <li><a href="/search" class="nav__link">Search</a></li>
         </ul>
       </div>
     </nav>
@@ -57,8 +64,10 @@ const {
     >
       <div class="container text-center">
         <p class="text-gray-600">
-          &copy; 2025 Melbourne Food Blog. Discover amazing food experiences in
-          Melbourne.
+          &copy; {year}
+          We acknowledge the Traditional Owners of the land we work across, the Wurundjeri
+          Woi-wurrung and Bunurong / Boon Wurrung peoples of the Kulin and pay respect
+          to their Elders past and present.
         </p>
       </div>
     </footer>

@@ -100,6 +100,9 @@
   --container-lg: 1024px;
   --container-xl: 1280px;
   --container-2xl: 1536px;
+
+  // Custom borders
+  --custom-border: 1px solid var(--color-gray-900);
 }
 
 // Reset and base styles
@@ -165,15 +168,15 @@ a {
   width: 100%;
   max-width: var(--container-xl);
   margin: 0 auto;
-  padding: 0 var(--spacing-4);
+  // padding: 0 var(--spacing-4);
   
-  @media (min-width: 640px) {
-    padding: 0 var(--spacing-6);
-  }
+  // @media (min-width: 640px) {
+  //   padding: 0 var(--spacing-6);
+  // }
   
-  @media (min-width: 1024px) {
-    padding: 0 var(--spacing-8);
-  }
+  // @media (min-width: 1024px) {
+  //   padding: 0 var(--spacing-8);
+  // }
 }
 
 .grid {
@@ -415,14 +418,23 @@ a {
 // Navigation styles
 .nav {
   background-color: var(--color-white);
-  border-bottom: 1px solid var(--color-gray-200);
-  box-shadow: var(--shadow-sm);
+  // border-bottom: 1px solid var(--color-gray-200);
+  // box-shadow: var(--shadow-sm);
   
   &__container {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: var(--spacing-4) 0;
+    // padding: var(--spacing-4) 0;
+    flex-direction: column;
+    border: 1px solid black;;
+  }
+
+  &__brand-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    border: var(--custom-border);
   }
   
   &__brand {
@@ -449,10 +461,19 @@ a {
   &__links {
     display: flex;
     align-items: center;
-    gap: var(--spacing-6);
+    // gap: var(--spacing-6);
     list-style: none;
     margin: 0;
     padding: 0;
+    width: 100%;
+
+    li {
+      border: var(--custom-border);
+      padding: var(--spacing-4) var(--spacing-6);
+      flex: 1;
+      display: flex;
+      justify-content: center;
+    }
   }
   
   &__link {
@@ -460,6 +481,8 @@ a {
     color: var(--color-gray-700);
     text-decoration: none;
     transition: color var(--transition-fast);
+    
+
     
     &:hover {
       color: var(--color-primary);

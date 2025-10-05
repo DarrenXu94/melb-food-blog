@@ -1,4 +1,8 @@
 ---
+import type { CuisineName } from "../types/cuisines";
+import { cuisines } from "../utils/cuisine";
+import { toCamelCaseAndRemoveSpecialChars } from "../utils/string";
+
 export interface Props {
   name: string;
   count?: number;
@@ -14,6 +18,17 @@ const {
   href = "#",
   color = "var(--color-primary)",
 } = Astro.props;
+
+let image = "";
+
+if (type === "cuisine") {
+  const cuisine =
+    cuisines[
+      toCamelCaseAndRemoveSpecialChars(name).toLowerCase() as CuisineName
+    ];
+
+  image = "/public/images/reviews" + cuisine?.url || "";
+}
 ---
 
 <div class="category-card">
@@ -25,6 +40,16 @@ const {
           <p class="category-card__count">
             {count} {count === 1 ? "review" : "reviews"}
           </p>
+        )
+      }
+      {
+        image && (
+          <img
+            src={image}
+            alt={`${name} cuisine`}
+            class="category-card__image"
+            loading="lazy"
+          />
         )
       }
     </div>
@@ -41,6 +66,19 @@ const {
     overflow: hidden;
     transition: all var(--transition-normal);
     box-shadow: var(--shadow-sm);
+  }
+
+  .category-card__image {
+    width: 100%;
+    height: 20rem;
+    object-fit: cover;
+    filter: blur(0.08rem);
+
+    transition: filter var(--transition-fast);
+
+    &:hover {
+      filter: blur(0);
+    }
   }
 
   .category-card:hover {

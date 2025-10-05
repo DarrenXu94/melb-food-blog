@@ -5,7 +5,8 @@ import { getAllReviews } from '../../../utils/api';
 import { allReviewsMappedToLocationAndCuisine, reviewDbRowToObject } from '../../../utils/mappers';
 import type { Review } from '../../../types/blog';
 import { capitalize, toCamelCaseAndRemoveSpecialChars } from '../../../utils/string';
-import { cuisines } from '../../../utils/icon';
+import { cuisines } from '../../../utils/cuisine';
+import type { CuisineName } from '../../../types/cuisines';
 
 // Define static paths for the dynamic route
 export async function getStaticPaths() {
@@ -123,9 +124,9 @@ const hasCategory = categoryData !== null;
 						</div>
 						<div class="category-visual" style="background-color: {categoryColor}20;">
 							<div class="category-icon" style="background-color: {categoryColor};">
-								{type === 'cuisine' ? cuisines[toCamelCaseAndRemoveSpecialChars(categoryName).toLowerCase()] && (
+								{type === 'cuisine' ? cuisines[toCamelCaseAndRemoveSpecialChars(categoryName).toLowerCase() as CuisineName] && (
 								<div class="category-icon">
-									{cuisines[toCamelCaseAndRemoveSpecialChars(categoryName).toLowerCase()].icon}
+									{cuisines[toCamelCaseAndRemoveSpecialChars(categoryName).toLowerCase() as CuisineName].icon}
 								</div>
 							) : '📍'}
 							</div>
