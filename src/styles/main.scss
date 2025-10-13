@@ -103,6 +103,7 @@
 
   // Custom borders
   --custom-border: 1px solid var(--color-gray-900);
+  --custom-thick-border: 2px solid var(--color-gray-900);
 }
 
 // Reset and base styles
@@ -179,9 +180,13 @@ a {
   // }
 }
 
+.custom-border {
+  border: var(--custom-border);
+}
+
 .grid {
   display: grid;
-  gap: 1.5rem; /* 24px - using direct value for better browser support */
+  // gap: 1.5rem; /* 24px - using direct value for better browser support */
   
   &--2-cols {
     grid-template-columns: 1fr;
@@ -330,15 +335,16 @@ a {
 // Card styles
 .card {
   background-color: var(--color-white);
-  border: 1px solid var(--color-gray-200);
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-sm);
-  overflow: hidden;
-  transition: box-shadow var(--transition-normal);
+  // border: 1px solid var(--color-gray-200);
+  border: var(--custom-border);
+  // border-radius: var(--radius-lg);
+  // box-shadow: var(--shadow-sm);
+  // overflow: hidden;
+  // transition: box-shadow var(--transition-normal);
   
-  &:hover {
-    box-shadow: var(--shadow-md);
-  }
+  // &:hover {
+  //   box-shadow: var(--shadow-md);
+  // }
   
   &__header {
     padding: var(--spacing-6);
@@ -427,7 +433,8 @@ a {
     justify-content: space-between;
     // padding: var(--spacing-4) 0;
     flex-direction: column;
-    border: 1px solid black;;
+    // border: 1px solid black;
+    border: var(--custom-border);
   }
 
   &__brand-container {

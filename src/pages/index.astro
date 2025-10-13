@@ -72,7 +72,7 @@ const locations = Object.keys(reduceToCuisineAndLocation.locations)
   <section class="section">
     <div class="container">
       <h2 class="section__title">Top Rated Reviews</h2>
-      <div class="grid grid--3-cols">
+      <div class="grid grid--3-cols custom-border">
         {
           sortedTopRatedReviews.map((review) => (
             <ReviewCard {...review} size="large" />
@@ -86,7 +86,7 @@ const locations = Object.keys(reduceToCuisineAndLocation.locations)
   <section class="section section--alt">
     <div class="container">
       <h2 class="section__title">Most Reviewed Cuisines</h2>
-      <div class="grid grid--3-cols">
+      <div class="grid grid--3-cols custom-border">
         {
           cuisineTypes.map((cuisine) => (
             <CategoryCard
@@ -105,7 +105,7 @@ const locations = Object.keys(reduceToCuisineAndLocation.locations)
   <section class="section">
     <div class="container">
       <h2 class="section__title">Most Reviewed Locations</h2>
-      <div class="grid grid--3-cols">
+      <div class="grid grid--3-cols custom-border">
         {
           locations.map((location) => (
             <CategoryCard
@@ -185,7 +185,7 @@ const locations = Object.keys(reduceToCuisineAndLocation.locations)
   }
 
   .section {
-    padding: var(--spacing-16) 0;
+    // padding: var(--spacing-16) 0;
   }
 
   .section--alt {
@@ -194,7 +194,12 @@ const locations = Object.keys(reduceToCuisineAndLocation.locations)
 
   .section__title {
     text-align: center;
-    margin-bottom: var(--spacing-12);
+    margin-bottom: 0;
+    border-left: var(--custom-thick-border);
+    border-right: var(--custom-thick-border);
+    // margin-bottom: var(--spacing-12);
+    padding-bottom: var(--spacing-12);
+    padding-top: var(--spacing-6);
     font-size: var(--font-size-3xl);
   }
 
