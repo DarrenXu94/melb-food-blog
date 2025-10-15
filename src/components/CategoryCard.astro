@@ -33,25 +33,23 @@ if (type === "cuisine") {
 
 <div class="category-card">
   <a href={href} class="category-card__link">
-    <div class="category-card__content">
-      <h3 class="category-card__name">{name}</h3>
-      {
-        count && (
-          <p class="category-card__count">
-            {count} {count === 1 ? "review" : "reviews"}
-          </p>
-        )
-      }
-      {
-        image && (
-          <img
-            src={image}
-            alt={`${name} cuisine`}
-            class="category-card__image"
-            loading="lazy"
-          />
-        )
-      }
+    <div>
+      <div
+        class="category-card__content"
+        style={`background-image: url(${image});`}
+      >
+      </div>
+
+      <div class="category-card__header" style={`background-color: ${color};`}>
+        <h3 class="category-card__name">{name}</h3>
+        {
+          count && (
+            <p class="category-card__count">
+              {count} {count === 1 ? "review" : "reviews"}
+            </p>
+          )
+        }
+      </div>
     </div>
   </a>
 </div>
@@ -59,12 +57,7 @@ if (type === "cuisine") {
 <style>
   .category-card {
     background-color: var(--color-white);
-    /* border: 1px solid var(--color-gray-200); */
-    /* border-radius: var(--radius-lg); */
-    /* overflow: hidden; */
     border: var(--custom-border);
-    /* transition: all var(--transition-normal); */
-    /* box-shadow: var(--shadow-sm); */
   }
 
   .category-card__image {
@@ -80,11 +73,6 @@ if (type === "cuisine") {
     }
   }
 
-  /* .category-card:hover {
-    box-shadow: var(--shadow-md);
-    transform: translateY(-2px);
-  } */
-
   .category-card__link {
     display: block;
     text-decoration: none;
@@ -93,21 +81,39 @@ if (type === "cuisine") {
   }
 
   .category-card__content {
-    padding: var(--spacing-6);
     position: relative;
     z-index: 1;
+    height: 20rem;
+    background-size: cover;
+    background-position: center; /* Center the image */
+
+    filter: grayscale(100%);
+    transition: filter var(--transition-normal);
+
+    &:hover {
+      filter: grayscale(0%);
+    }
+  }
+
+  .category-card__header {
+    padding: var(--spacing-4);
+    text-align: center;
+    position: absolute;
+    z-index: 1;
+    bottom: var(--spacing-4);
+    left: var(--spacing-4);
   }
 
   .category-card__name {
     margin: 0 0 var(--spacing-2) 0;
     font-size: var(--font-size-lg);
     font-weight: var(--font-weight-semibold);
-    color: var(--color-gray-900);
+    color: var(--color-white);
   }
 
   .category-card__count {
     margin: 0;
     font-size: var(--font-size-sm);
-    color: var(--color-gray-600);
+    color: var(--color-white);
   }
 </style>
