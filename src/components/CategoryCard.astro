@@ -31,12 +31,12 @@ if (type === "cuisine") {
 }
 ---
 
-<div class="category-card">
+<div class:list={["category-card", image ? "has-image" : "no-image"]}>
   <a href={href} class="category-card__link">
     <div>
       <div
         class="category-card__content"
-        style={`background-image: url(${image});`}
+        style={image ? `background-image: url(${image});` : ""}
       >
       </div>
 
@@ -57,7 +57,8 @@ if (type === "cuisine") {
 <style>
   .category-card {
     background-color: var(--color-white);
-    border: var(--custom-border);
+    border-bottom: var(--custom-border);
+    border-right: var(--custom-border);
   }
 
   .category-card__image {
@@ -83,7 +84,6 @@ if (type === "cuisine") {
   .category-card__content {
     position: relative;
     z-index: 1;
-    height: 20rem;
     background-size: cover;
     background-position: center; /* Center the image */
 
@@ -95,11 +95,19 @@ if (type === "cuisine") {
     }
   }
 
+  .has-image .category-card__content {
+    height: 20rem;
+  }
+
+  .has-image .category-card__header {
+    position: absolute;
+    z-index: 1;
+  }
+
   .category-card__header {
     padding: var(--spacing-4);
     text-align: center;
-    position: absolute;
-    z-index: 1;
+
     bottom: var(--spacing-4);
     left: var(--spacing-4);
   }

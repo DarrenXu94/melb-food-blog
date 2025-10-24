@@ -147,7 +147,7 @@ const hasCategory = categoryData !== null;
 						</div>
 					</div>
 
-					<div class="grid grid--3-cols">
+					<div class="grid grid--3-cols grid-border-top-left">
 						{categoryReviews.map((review) => (
 							<ReviewCard {...review} href={`/reviews/${toCamelCaseAndRemoveSpecialChars(review.properties.name)}`} size="medium" />
 						))}

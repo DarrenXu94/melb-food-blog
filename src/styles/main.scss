@@ -184,6 +184,11 @@ a {
   border: var(--custom-border);
 }
 
+.grid-border-top-left {
+  border-top: var(--custom-border);
+  border-left: var(--custom-border);
+}
+
 .grid {
   display: grid;
   // gap: 1.5rem; /* 24px - using direct value for better browser support */
@@ -336,7 +341,7 @@ a {
 .card {
   background-color: var(--color-white);
   // border: 1px solid var(--color-gray-200);
-  border: var(--custom-border);
+  // border: var(--custom-border);
   // border-radius: var(--radius-lg);
   // box-shadow: var(--shadow-sm);
   // overflow: hidden;
@@ -345,6 +350,9 @@ a {
   // &:hover {
   //   box-shadow: var(--shadow-md);
   // }
+
+  border-bottom: var(--custom-border);
+  border-right: var(--custom-border);
   
   &__header {
     padding: var(--spacing-6);
@@ -434,7 +442,7 @@ a {
     // padding: var(--spacing-4) 0;
     flex-direction: column;
     // border: 1px solid black;
-    border: var(--custom-border);
+    // border: var(--custom-border);
   }
 
   &__brand-container {
@@ -442,6 +450,7 @@ a {
     display: flex;
     justify-content: center;
     border: var(--custom-border);
+    border-bottom: 0;
   }
   
   &__brand {
@@ -475,7 +484,8 @@ a {
     width: 100%;
 
     li {
-      border: var(--custom-border);
+      border-right: var(--custom-border);
+      border-bottom: var(--custom-border);
       padding: var(--spacing-4) var(--spacing-6);
       flex: 1;
       display: flex;
