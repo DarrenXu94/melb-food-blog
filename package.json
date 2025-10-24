@@ -6,10 +6,12 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "fetch-images": "node --env-file=.env scripts/fetchImages.mjs"
   },
   "dependencies": {
     "astro": "^5.13.5",
-    "sass": "^1.92.0"
+    "sass": "^1.92.0",
+    "ts-node": "^10.9.2"
   }
 }

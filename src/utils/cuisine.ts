@@ -4,7 +4,7 @@ export const cuisines = {
   afghan: { icon: "🇦🇫", url: "/afghanHyatt/afghanHyatt.jpg" },
   bangladeshi: { icon: "🇧🇩", url: "/chaAdda/chaAdda.jpeg" },
   brunch: { icon: "🥞", url: "/cafeOmnia/cafeOmnia.jpg" },
-  chinese: { icon: "🇨🇳", url: "/tian380/tian380.jpg" },
+  chinese: { icon: "🇨🇳", url: "/tian38/tian38.jpg" },
   dessert: { icon: "🍰", url: "/homm/homm.jpg" },
   fishChips: { icon: "🐟", url: "/blueFinBlairgowrie/blueFinBlairgowrie.jpg" },
   greek: { icon: "🇬🇷", url: "/hellenicDepot/hellenicDepot.jpg" },
