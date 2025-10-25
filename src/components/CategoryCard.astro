@@ -23,9 +23,7 @@ let image = "";
 
 if (type === "cuisine") {
   const cuisine =
-    cuisines[
-      toCamelCaseAndRemoveSpecialChars(name).toLowerCase() as CuisineName
-    ];
+    cuisines[toCamelCaseAndRemoveSpecialChars(name) as CuisineName];
 
   image = "/images/reviews" + cuisine?.url || "";
 }
