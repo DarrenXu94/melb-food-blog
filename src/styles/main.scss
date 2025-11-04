@@ -488,7 +488,6 @@ a {
     li {
       border-right: var(--custom-border);
       border-bottom: var(--custom-border);
-      padding: var(--spacing-4) var(--spacing-6);
       flex: 1;
       display: flex;
       justify-content: center;
@@ -496,11 +495,13 @@ a {
   }
   
   &__link {
+    padding: var(--spacing-4) var(--spacing-6);
+    text-align: center;
     font-weight: var(--font-weight-medium);
     color: var(--color-gray-700);
     text-decoration: none;
     transition: color var(--transition-fast);
-    
+    width: 100%;
 
     
     &:hover {
