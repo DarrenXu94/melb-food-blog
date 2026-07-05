@@ -23,9 +23,9 @@ if (query) {
     (review) =>
       review.properties.name.toLowerCase().includes(query.toLowerCase()) ||
       review.properties.cuisineType.some((c) =>
-        c.toLowerCase().includes(query.toLowerCase())
+        c.toLowerCase().includes(query.toLowerCase()),
       ) ||
-      review.properties.suburb.toLowerCase().includes(query.toLowerCase())
+      review.properties.suburb.toLowerCase().includes(query.toLowerCase()),
   );
 }
 
@@ -33,28 +33,28 @@ if (query) {
 if (cuisine) {
   filteredReviews = filteredReviews.filter((review) =>
     review.properties.cuisineType.some((c) =>
-      c.toLowerCase().includes(query.toLowerCase())
-    )
+      c.toLowerCase().includes(query.toLowerCase()),
+    ),
   );
 }
 
 // Filter by location
 if (location) {
   filteredReviews = filteredReviews.filter((review) =>
-    review.properties.suburb.toLowerCase().includes(location.toLowerCase())
+    review.properties.suburb.toLowerCase().includes(location.toLowerCase()),
   );
 }
 
 // Filter by price
 if (price) {
   filteredReviews = filteredReviews.filter(
-    (review) => review.properties.priceRange === price
+    (review) => review.properties.priceRange === price,
   );
 }
 
 // Sort by rating (highest first)
 filteredReviews.sort(
-  (a, b) => parseFloat(b.properties.rating) - parseFloat(a.properties.rating)
+  (a, b) => parseFloat(b.properties.rating) - parseFloat(a.properties.rating),
 );
 
 const hasSearchCriteria = query || cuisine || location || price;
@@ -71,30 +71,13 @@ const hasSearchCriteria = query || cuisine || location || price;
   </div>
 
   <div class="page-content">
-    <div class="container">
-      <!-- Search Form -->
-      <!-- <section class="search-section">
-        <form method="GET" class="search-form">
-          <div class="search-form__main">
-            <div class="search-input-group">
-              <input
-                type="search"
-                name="q"
-                value={query}
-                placeholder="Search by restaurant name, cuisine, or location..."
-                class="form-input search-input"
-                aria-label="Search restaurants"
-              />
-              <button type="submit" class="btn btn--primary search-btn"
-                >Search</button
-              >
-            </div>
-          </div>
-        </form>
-      </section> -->
+    <div class="border-bottom">
+      <div class="container">
+        <SearchComponent />
+      </div>
+    </div>
 
-      <SearchComponent />
-
+    <div class="container mt-6">
       <!-- Search Results -->
       <section class="results-section">
         <div class="results-header">
@@ -108,9 +91,8 @@ const hasSearchCriteria = query || cuisine || location || price;
 
 <style>
   .page-header {
-    background-color: var(--color-gray-50);
+    background-color: var(--color-white);
     padding: var(--spacing-12) 0;
-    border-bottom: 1px solid var(--color-gray-200);
   }
 
   .page-title {
@@ -125,10 +107,6 @@ const hasSearchCriteria = query || cuisine || location || price;
     color: var(--color-gray-600);
     text-align: center;
     margin: 0;
-  }
-
-  .page-content {
-    padding: var(--spacing-8) 0;
   }
 
   .search-section {

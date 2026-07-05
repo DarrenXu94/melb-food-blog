@@ -29,6 +29,10 @@ if (type === "cuisine") {
 
   image = "/images/reviews" + cuisine?.url || "";
 }
+
+const headerBg = image ? (noBgColor ? "transparent" : color) : "transparent";
+const headerTextColor =
+  image && !noBgColor ? "var(--color-white)" : "var(--color-gray-900)";
 ---
 
 <div class:list={["category-card", image ? "has-image" : "no-image"]}>
@@ -42,7 +46,7 @@ if (type === "cuisine") {
 
       <div
         class="category-card__header"
-        style={`background-color: ${noBgColor ? "transparent" : color};`}
+        style={`background-color: ${headerBg}; color: ${headerTextColor};`}
       >
         <h3 class="category-card__name">{name}</h3>
         {
@@ -60,11 +64,24 @@ if (type === "cuisine") {
 <style lang="scss">
   .category-card {
     background-color: var(--color-white);
-
-    --category-card-color: var(--color-white);
+    overflow: hidden;
+    transition: box-shadow var(--transition-normal);
 
     &.no-image {
       --category-card-color: var(--color-gray-900);
+      border: 1px solid var(--color-gray-900);
+
+      .category-card__content {
+        min-height: 0;
+        background-color: transparent;
+      }
+
+      .category-card__header {
+        position: static;
+        background-color: transparent;
+        color: var(--color-gray-900);
+        text-align: left;
+      }
     }
   }
 
@@ -94,11 +111,9 @@ if (type === "cuisine") {
     background-size: cover;
     background-position: center; /* Center the image */
 
-    filter: grayscale(100%);
     transition: filter var(--transition-normal);
 
     &:hover {
-      filter: grayscale(0%);
     }
   }
 
@@ -109,14 +124,13 @@ if (type === "cuisine") {
   .has-image .category-card__header {
     position: absolute;
     z-index: 1;
+    bottom: var(--spacing-4);
+    left: var(--spacing-4);
   }
 
   .category-card__header {
     padding: var(--spacing-4);
     text-align: center;
-
-    bottom: var(--spacing-4);
-    left: var(--spacing-4);
   }
 
   .category-card__name {

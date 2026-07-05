@@ -104,8 +104,9 @@ const hasCategory = categoryData !== null;
 		<div class="category-page">
 			<!-- Category Header -->
 			<section class="category-header">
-				<div class="container">
-					<div class="category-hero">
+				<div class="border-bottom">
+					<div class="container">
+						<div class="category-hero">
 						<div class="category-info">
 							<h1 class="category-title">{categoryName}</h1>
 							<p class="category-description">{categoryDescription}</p>
@@ -137,8 +138,8 @@ const hasCategory = categoryData !== null;
 
 			<!-- Category Reviews -->
 			<section class="category-reviews">
-				<div class="container">
-					<div class="reviews-header">
+				<div class="border-bottom">
+						<div class="reviews-header container">
 						<h2 class="reviews-title">
 							{categoryReviews.length} {categoryReviews.length === 1 ? 'Restaurant' : 'Restaurants'} in {categoryName}
 						</h2>
@@ -146,11 +147,13 @@ const hasCategory = categoryData !== null;
 							<a href="/category" class="btn btn--primary">Browse Categories</a>
 						</div>
 					</div>
-
-					<div class="grid grid--3-cols grid-border-top-left">
+					<div class="border-top">
+						<div class="container">
+						<div class="grid grid--3-cols">
 						{categoryReviews.map((review) => (
 							<ReviewCard {...review} href={`/reviews/${toCamelCaseAndRemoveSpecialChars(review.properties.name)}`} size="medium" />
 						))}
+						</div>
 					</div>
 				</div>
 			</section>
@@ -184,16 +187,17 @@ const hasCategory = categoryData !== null;
 		padding: 0;
 	}
 	
+	.category-header {
+		padding: var(--spacing-12) 0;
+		background-color: var(--color-white);
+	}
+
 	.category-hero {
 		display: grid;
 		gap: var(--spacing-8);
 		grid-template-columns: 1fr;
 		align-items: center;
-    padding: var(--spacing-8) var(--spacing-6);
-		
-		border-left: var(--custom-border);
-		border-right: var(--custom-border);
-		border-bottom: var(--custom-border);
+        padding: var(--spacing-8) 0;
 		@media (min-width: 768px) {
 			grid-template-columns: 2fr 1fr;
 		}
@@ -259,7 +263,6 @@ const hasCategory = categoryData !== null;
 		justify-content: center;
 		font-size: 3rem;
 		color: var(--color-white);
-		box-shadow: var(--shadow-lg);
 	}
 	
 	.category-reviews {
@@ -272,10 +275,7 @@ const hasCategory = categoryData !== null;
 		align-items: center;
 		flex-wrap: wrap;
 		gap: var(--spacing-4);
-
-    padding: var(--spacing-8) var(--spacing-6);
-		border-left: var(--custom-border);
-		border-right: var(--custom-border);
+		padding: var(--spacing-8) 0;
 	}
 	
 	.reviews-title {
@@ -298,27 +298,16 @@ const hasCategory = categoryData !== null;
 	.related-title {
 		text-align: center;
 		font-size: var(--font-size-2xl);
-		padding: var(--spacing-8) var(--spacing-6);
-		border-left: var(--custom-border);
-		border-right: var(--custom-border);
-		border-bottom: var(--custom-border);
-		border-top: var(--custom-border);
-		margin-bottom: 0;
+		padding-bottom: var(--spacing-4);
+		margin-bottom: var(--spacing-4);
 	}
-	
+
 	.related-links {
 		display: flex;
 		justify-content: center;
 		gap: var(--spacing-4);
 		flex-wrap: wrap;
-
-		padding: var(--spacing-8) var(--spacing-6);
-		border-left: var(--custom-border);
-		border-right: var(--custom-border);
-		border-bottom: var(--custom-border);
-	}
-	
-	.error-page {
+		padding: var(--spacing-8) 0;
 		padding: var(--spacing-16) 0;
 		text-align: center;
 	}

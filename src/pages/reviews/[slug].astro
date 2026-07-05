@@ -71,7 +71,8 @@ const hasReview = review.id.length > 0;
 		<article class="review-page">
 			<!-- Hero Section -->
 			<section class="review-hero">
-				<div class="container">
+				<div class="border-bottom">
+					<div class="container">
 					<div class="review-hero__content">
 						{heroImage && (
 							<div class="review-hero__image">
@@ -93,7 +94,7 @@ const hasReview = review.id.length > 0;
 									<span class="rating-label">Rating:</span>
 									<span class="rating-value">{review.properties.rating}/10</span>
 								</div>
-								<div class="review-details">
+								<div class="review-details mb-6">
 									{/* <span class="cuisine">{review.properties.cuisineType.map((cuisine) => capitalize(cuisine)).join(" / ")}</span> */}
 									{review.properties.cuisineType.map((cuisine) => (
 										<span class="cuisine" >
@@ -121,14 +122,17 @@ const hasReview = review.id.length > 0;
 
 			<!-- Review Content -->
 			<section class="review-content">
-				<div class="container">
+				<div class="border-bottom">
+					<div class="container">
 					<div class="review-body">
-						{markdown && (
+						{markdown && markdown.review ? (
 							<div class="review-text" set:html={markdown.review}></div>
+						) : (
+							<p class="review-text review-text--empty">Content coming soon</p>
 						)}
 						
 						
-						<div class="review-footer">
+						<div class="review-footer mb-6">
 							
 							<div class="review-date">
 								<span class="date-label">Date:</span>
@@ -171,9 +175,8 @@ const hasReview = review.id.length > 0;
 	}
 	
 	.review-hero {
-		background-color: var(--color-gray-50);
+		background-color: var(--color-white);
 		padding: var(--spacing-12) 0;
-		border-bottom: 1px solid var(--color-gray-200);
 	}
 	
 	.review-hero__content {
@@ -242,7 +245,6 @@ const hasReview = review.id.length > 0;
 	.review-details span {
 		background-color: var(--color-white);
 		padding: var(--spacing-2) var(--spacing-4);
-		border-radius: var(--radius-md);
 		font-size: var(--font-size-sm);
 		font-weight: var(--font-weight-medium);
 		border: 1px solid var(--color-gray-200);
@@ -262,6 +264,12 @@ const hasReview = review.id.length > 0;
 		line-height: var(--line-height-relaxed);
 		color: var(--color-gray-800);
 		margin-bottom: var(--spacing-12);
+	}
+
+	.review-text--empty {
+		color: var(--color-gray-600);
+		font-style: italic;
+		margin-bottom: var(--spacing-8);
 	}
 	
 	.review-text h2 {
@@ -291,10 +299,6 @@ const hasReview = review.id.length > 0;
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
-		padding: var(--spacing-6);
-		background-color: var(--color-gray-50);
-		border-radius: var(--radius-lg);
-		border: 1px solid var(--color-gray-200);
 		flex-wrap: wrap;
 		gap: var(--spacing-4);
 	}
@@ -319,9 +323,7 @@ const hasReview = review.id.length > 0;
 	}
 	
 	.related-reviews {
-		background-color: var(--color-gray-50);
 		padding: var(--spacing-12) 0;
-		border-top: 1px solid var(--color-gray-200);
 	}
 	
 	.related-title {

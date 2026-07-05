@@ -16,17 +16,19 @@ let filteredReviews = allReviews.map((review) => ({
 
 // Sort by rating (highest first)
 filteredReviews.sort(
-  (a, b) => parseFloat(b.properties.rating) - parseFloat(a.properties.rating)
+  (a, b) => parseFloat(b.properties.rating) - parseFloat(a.properties.rating),
 );
 ---
 
 <Layout title="Restaurant Reviews - Melbourne Food Blog">
   <div class="page-header">
-    <div class="container">
-      <h1 class="page-title">Restaurant Reviews</h1>
-      <p class="page-subtitle">
-        Discover Melbourne's finest dining experiences
-      </p>
+    <div class="border-bottom">
+      <div class="container mb-6">
+        <h1 class="page-title">Restaurant Reviews</h1>
+        <p class="page-subtitle">
+          Discover Melbourne's finest dining experiences
+        </p>
+      </div>
     </div>
   </div>
 
@@ -38,7 +40,7 @@ filteredReviews.sort(
           <div class="reviews-header">
             <h2 class="reviews-title">
               {filteredReviews.length}
-              {filteredReviews.length === 1 ? "Review" : "Reviews"} Found
+              {filteredReviews.length === 1 ? "review" : "reviews"} found
             </h2>
             {
               filteredReviews.length === 0 && (
@@ -50,7 +52,7 @@ filteredReviews.sort(
             }
           </div>
 
-          <div class="grid grid--3-cols grid-border-top-left">
+          <div class="grid grid--3-cols">
             {
               filteredReviews.map((review) => (
                 <ReviewCard {...review} size="medium" />
@@ -61,58 +63,57 @@ filteredReviews.sort(
       </div>
     </div>
   </div>
+
+  <style>
+    .page-header {
+      background-color: var(--color-white);
+      padding: var(--spacing-12) 0;
+    }
+
+    .page-title {
+      font-size: var(--font-size-4xl);
+      font-weight: var(--font-weight-bold);
+      margin-bottom: var(--spacing-4);
+      text-align: center;
+    }
+
+    .page-subtitle {
+      font-size: var(--font-size-lg);
+      color: var(--color-gray-600);
+      text-align: center;
+      margin: 0;
+    }
+
+    .page-content {
+      padding: var(--spacing-12) 0;
+    }
+
+    .filters-sidebar {
+      @media (max-width: 1023px) {
+        order: 2;
+      }
+    }
+
+    .reviews-main {
+      @media (max-width: 1023px) {
+        order: 1;
+      }
+    }
+
+    .reviews-header {
+      margin-bottom: var(--spacing-8);
+    }
+
+    .reviews-title {
+      font-size: var(--font-size-2xl);
+      font-weight: var(--font-weight-semibold);
+      margin-bottom: var(--spacing-4);
+    }
+
+    .no-results {
+      color: var(--color-gray-600);
+      font-style: italic;
+      margin: 0;
+    }
+  </style>
 </Layout>
-
-<style>
-  .page-header {
-    background-color: var(--color-gray-50);
-    padding: var(--spacing-12) 0;
-    border-bottom: 1px solid var(--color-gray-200);
-  }
-
-  .page-title {
-    font-size: var(--font-size-4xl);
-    font-weight: var(--font-weight-bold);
-    margin-bottom: var(--spacing-4);
-    text-align: center;
-  }
-
-  .page-subtitle {
-    font-size: var(--font-size-lg);
-    color: var(--color-gray-600);
-    text-align: center;
-    margin: 0;
-  }
-
-  .page-content {
-    padding: var(--spacing-8) 0;
-  }
-
-  .filters-sidebar {
-    @media (max-width: 1023px) {
-      order: 2;
-    }
-  }
-
-  .reviews-main {
-    @media (max-width: 1023px) {
-      order: 1;
-    }
-  }
-
-  .reviews-header {
-    margin-bottom: var(--spacing-8);
-  }
-
-  .reviews-title {
-    font-size: var(--font-size-2xl);
-    font-weight: var(--font-weight-semibold);
-    margin-bottom: var(--spacing-4);
-  }
-
-  .no-results {
-    color: var(--color-gray-600);
-    font-style: italic;
-    margin: 0;
-  }
-</style>

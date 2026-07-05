@@ -49,25 +49,6 @@ const locations = Object.keys(reduceToCuisineAndLocation.locations)
 ---
 
 <Layout title="Melbourne Food Blog - Discover Amazing Restaurants">
-  <!-- Hero Section -->
-  <!-- <section class="hero">
-    <div class="container">
-      <div class="hero__content">
-        <h1 class="hero__title">Discover Melbourne's Best Restaurants</h1>
-        <p class="hero__subtitle">
-          From hidden gems to fine dining, explore our curated collection of
-          Melbourne's most delicious experiences.
-        </p>
-        <div class="hero__actions">
-          <a href="/reviews" class="btn btn--primary btn--lg">Browse Reviews</a>
-          <a href="/search" class="btn btn--outline btn--lg"
-            >Search Restaurants</a
-          >
-        </div>
-      </div>
-    </div>
-  </section> -->
-
   <!-- Top Rated Reviews -->
   <section class="section">
     <div class="border-bottom">
@@ -110,7 +91,7 @@ const locations = Object.keys(reduceToCuisineAndLocation.locations)
       <div class="border-bottom">
         <h2 class="section__title">Most Reviewed Locations</h2>
       </div>
-      <div class="grid grid--3-cols">
+      <div class="grid grid--3-cols container mt-6 mb-6 gap-6">
         {
           locations.map((location) => (
             <CategoryCard

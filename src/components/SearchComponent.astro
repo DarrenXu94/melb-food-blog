@@ -41,7 +41,7 @@ const mappedReviews = res.reviews.map(reviewDbRowToObject);
   }
 
   const reviews = JSON.parse(
-    id ? (id.getAttribute("data-reviews") as string) : ""
+    id ? (id.getAttribute("data-reviews") as string) : "",
   ) as Review[];
 
   console.log("Current search query:", query);
@@ -51,13 +51,13 @@ const mappedReviews = res.reviews.map(reviewDbRowToObject);
       return (
         review.properties.name.toLowerCase().includes(term) ||
         review.properties.cuisineType.some((cuisine) =>
-          cuisine.toLowerCase().includes(term)
+          cuisine.toLowerCase().includes(term),
         ) ||
         review.properties.suburb.toLowerCase().includes(term)
       );
     });
     const resultsGrid = document.getElementById(
-      "resultsGrid"
+      "resultsGrid",
     ) as HTMLDivElement;
     resultsGrid.innerHTML = ""; // Clear previous results
     filteredReviews.forEach((review) => {
@@ -81,7 +81,7 @@ const mappedReviews = res.reviews.map(reviewDbRowToObject);
 
   if (query) {
     const searchInput = document.getElementById(
-      "searchInput"
+      "searchInput",
     ) as HTMLInputElement;
     searchInput.value = query;
     // Wait for the DOM to be fully loaded before performing the search
@@ -112,7 +112,7 @@ const mappedReviews = res.reviews.map(reviewDbRowToObject);
   });
 </script>
 
-<style>
+<style lang="scss">
   .search-form__main {
     margin-bottom: var(--spacing-6);
   }
@@ -128,6 +128,9 @@ const mappedReviews = res.reviews.map(reviewDbRowToObject);
     flex: 1;
     font-size: var(--font-size-lg);
     padding: var(--spacing-4) var(--spacing-6);
+    &:focus {
+      box-shadow: none;
+    }
   }
 </style>
 
