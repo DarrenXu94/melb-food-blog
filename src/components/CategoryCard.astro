@@ -9,6 +9,7 @@ export interface Props {
   type: "cuisine" | "location";
   href?: string;
   color?: string;
+  noBgColor?: boolean;
 }
 
 const {
@@ -17,6 +18,7 @@ const {
   type,
   href = "#",
   color = "var(--color-primary)",
+  noBgColor = false,
 } = Astro.props;
 
 let image = "";
@@ -38,7 +40,10 @@ if (type === "cuisine") {
       >
       </div>
 
-      <div class="category-card__header" style={`background-color: ${color};`}>
+      <div
+        class="category-card__header"
+        style={`background-color: ${noBgColor ? "transparent" : color};`}
+      >
         <h3 class="category-card__name">{name}</h3>
         {
           count && (
@@ -52,11 +57,15 @@ if (type === "cuisine") {
   </a>
 </div>
 
-<style>
+<style lang="scss">
   .category-card {
     background-color: var(--color-white);
-    border-bottom: var(--custom-border);
-    border-right: var(--custom-border);
+
+    --category-card-color: var(--color-white);
+
+    &.no-image {
+      --category-card-color: var(--color-gray-900);
+    }
   }
 
   .category-card__image {
@@ -114,12 +123,12 @@ if (type === "cuisine") {
     margin: 0 0 var(--spacing-2) 0;
     font-size: var(--font-size-lg);
     font-weight: var(--font-weight-semibold);
-    color: var(--color-white);
+    color: var(--category-card-color);
   }
 
   .category-card__count {
     margin: 0;
     font-size: var(--font-size-sm);
-    color: var(--color-white);
+    color: var(--category-card-color);
   }
 </style>

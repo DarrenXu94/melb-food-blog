@@ -164,6 +164,14 @@ a {
   }
 }
 
+.border-bottom {
+  border-bottom: var(--custom-border);
+}
+
+.border-top {
+  border-top: var(--custom-border);
+}
+
 // Layout utilities
 .container {
   width: 100%;
@@ -238,6 +246,25 @@ a {
       grid-template-columns: 300px 1fr;
     }
   }
+@each $size, $value in (
+    1: var(--spacing-1),
+    2: var(--spacing-2),
+    3: var(--spacing-3),
+    4: var(--spacing-4),
+    5: var(--spacing-5),
+    6: var(--spacing-6),
+    8: var(--spacing-8),
+    10: var(--spacing-10),
+    12: var(--spacing-12),
+    16: var(--spacing-16),
+    20: var(--spacing-20),
+    24: var(--spacing-24)
+  ) {
+    &.gap-#{$size} {
+      gap: $value;
+    }
+  }
+  
 }
 
 .flex {
@@ -263,11 +290,8 @@ a {
   &--around {
     justify-content: space-around;
   }
+
   
-  &--gap-2 { gap: var(--spacing-2); }
-  &--gap-4 { gap: var(--spacing-4); }
-  &--gap-6 { gap: var(--spacing-6); }
-  &--gap-8 { gap: var(--spacing-8); }
 }
 
 // Button styles
@@ -351,8 +375,6 @@ a {
   //   box-shadow: var(--shadow-md);
   // }
 
-  border-bottom: var(--custom-border);
-  border-right: var(--custom-border);
   
   &__header {
     padding: var(--spacing-6);
@@ -449,7 +471,6 @@ a {
     width: 100%;
     display: flex;
     justify-content: center;
-    border: var(--custom-border);
     border-bottom: 0;
     padding: var(--spacing-4);
   }
@@ -486,8 +507,6 @@ a {
     width: 100%;
 
     li {
-      border-right: var(--custom-border);
-      border-bottom: var(--custom-border);
       flex: 1;
       display: flex;
       justify-content: center;

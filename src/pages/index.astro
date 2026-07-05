@@ -22,7 +22,7 @@ const sortedTopRatedReviews = res.reviews
     };
   })
   .sort(
-    (a, b) => parseFloat(b.properties.rating) - parseFloat(a.properties.rating)
+    (a, b) => parseFloat(b.properties.rating) - parseFloat(a.properties.rating),
   )
   .slice(0, 3);
 
@@ -70,160 +70,146 @@ const locations = Object.keys(reduceToCuisineAndLocation.locations)
 
   <!-- Top Rated Reviews -->
   <section class="section">
-    <div class="container">
-      <h2 class="section__title">Top Rated Reviews</h2>
-      <div class="grid grid--3-cols grid-border-top-left">
+    <div class="border-bottom">
+      <h2 class="section__title border-bottom">Top Rated Reviews</h2>
+      <div class="grid grid--3-cols container">
         {
           sortedTopRatedReviews.map((review) => (
             <ReviewCard {...review} size="large" />
           ))
         }
       </div>
+      <!-- </div> -->
     </div>
-  </section>
 
-  <!-- Cuisine Types -->
-  <section class="section">
-    <div class="container">
-      <h2 class="section__title">Most Reviewed Cuisines</h2>
-      <div class="grid grid--3-cols grid-border-top-left">
-        {
-          cuisineTypes.map((cuisine) => (
-            <CategoryCard
-              count={cuisine.count}
-              name={capitalize(cuisine.name)}
-              type="cuisine"
-              href={`/category/cuisine/${cuisine.name.toLowerCase()}`}
-            />
-          ))
-        }
+    <!-- Cuisine Types -->
+    <section class="section">
+      <div class="border-bottom">
+        <div class="mb-8">
+          <div class="border-bottom">
+            <h2 class="section__title">Most Reviewed Cuisines</h2>
+          </div>
+          <div class="grid grid--3-cols gap-6 mt-8 container">
+            {
+              cuisineTypes.map((cuisine) => (
+                <CategoryCard
+                  count={cuisine.count}
+                  name={capitalize(cuisine.name)}
+                  type="cuisine"
+                  href={`/category/cuisine/${cuisine.name.toLowerCase()}`}
+                />
+              ))
+            }
+          </div>
+        </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- Locations -->
-  <section class="section">
-    <div class="container">
-      <h2 class="section__title">Most Reviewed Locations</h2>
-      <div class="grid grid--3-cols grid-border-top-left">
+    <!-- Locations -->
+    <section class="section">
+      <div class="border-bottom">
+        <h2 class="section__title">Most Reviewed Locations</h2>
+      </div>
+      <div class="grid grid--3-cols">
         {
           locations.map((location) => (
             <CategoryCard
               count={location.count}
               name={location.name}
               type="location"
+              noBgColor={true}
               href={`/category/location/${location.name.toLowerCase()}`}
             />
           ))
         }
       </div>
-    </div>
+    </section>
   </section>
 
-  <!-- Latest Reviews -->
-  <!-- <section class="section section--alt">
-    <div class="container">
-      <div class="section__header">
-        <h2 class="section__title">Latest Reviews</h2>
-        <a href="/reviews" class="btn btn--outline">View All Reviews</a>
-      </div>
-      <div class="grid grid--2-cols">
-        {
-          sortedTopRatedReviews.map((review) => (
-            <ReviewCard {...review} size="medium" />
-          ))
-        }
-      </div>
-    </div>
-  </section> -->
-</Layout>
-
-<style lang="scss">
-  .hero {
-    background: linear-gradient(
-      135deg,
-      var(--color-primary) 0%,
-      var(--color-primary-dark) 100%
-    );
-    color: var(--color-white);
-    padding: var(--spacing-16) 0;
-    text-align: center;
-
-    .btn--outline {
+  <style lang="scss">
+    .hero {
+      background: linear-gradient(
+        135deg,
+        var(--color-primary) 0%,
+        var(--color-primary-dark) 100%
+      );
       color: var(--color-white);
+      padding: var(--spacing-16) 0;
+      text-align: center;
+
+      .btn--outline {
+        color: var(--color-white);
+      }
     }
-  }
 
-  .hero__content {
-    max-width: 600px;
-    margin: 0 auto;
-  }
-
-  .hero__title {
-    font-size: var(--font-size-4xl);
-    font-weight: var(--font-weight-bold);
-    margin-bottom: var(--spacing-6);
-    color: var(--color-white);
-
-    @media (min-width: 640px) {
-      font-size: var(--font-size-5xl);
+    .hero__content {
+      max-width: 600px;
+      margin: 0 auto;
     }
-  }
 
-  .hero__subtitle {
-    font-size: var(--font-size-lg);
-    margin-bottom: var(--spacing-8);
-    opacity: 0.9;
-    line-height: var(--line-height-relaxed);
-  }
+    .hero__title {
+      font-size: var(--font-size-4xl);
+      font-weight: var(--font-weight-bold);
+      margin-bottom: var(--spacing-6);
+      color: var(--color-white);
 
-  .hero__actions {
-    display: flex;
-    gap: var(--spacing-4);
-    justify-content: center;
-    flex-wrap: wrap;
-  }
+      @media (min-width: 640px) {
+        font-size: var(--font-size-5xl);
+      }
+    }
 
-  .section {
-    // padding: var(--spacing-16) 0;
-  }
+    .hero__subtitle {
+      font-size: var(--font-size-lg);
+      margin-bottom: var(--spacing-8);
+      opacity: 0.9;
+      line-height: var(--line-height-relaxed);
+    }
 
-  .section--alt {
-    background-color: var(--color-gray-50);
-  }
+    .hero__actions {
+      display: flex;
+      gap: var(--spacing-4);
+      justify-content: center;
+      flex-wrap: wrap;
+    }
 
-  .section__title {
-    text-align: center;
-    margin-bottom: 0;
-    border-left: var(--custom-border);
-    border-right: var(--custom-border);
-    // margin-bottom: var(--spacing-12);
-    font-size: var(--font-size-3xl);
-    padding: var(--spacing-8) var(--spacing-6);
-  }
+    .section {
+      // padding: var(--spacing-16) 0;
+    }
 
-  .section__header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: var(--spacing-12);
-    flex-wrap: wrap;
-    gap: var(--spacing-4);
-  }
+    .section--alt {
+      background-color: var(--color-gray-50);
+    }
 
-  .section__header .section__title {
-    margin-bottom: 0;
-    text-align: left;
-  }
+    .section__title {
+      text-align: center;
+      margin-bottom: 0;
+      font-size: var(--font-size-3xl);
+      padding: var(--spacing-8) var(--spacing-6);
+    }
 
-  @media (max-width: 640px) {
     .section__header {
-      flex-direction: column;
-      align-items: stretch;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: var(--spacing-12);
+      flex-wrap: wrap;
+      gap: var(--spacing-4);
     }
 
     .section__header .section__title {
-      text-align: center;
+      margin-bottom: 0;
+      text-align: left;
     }
-  }
-</style>
+
+    @media (max-width: 640px) {
+      .section__header {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .section__header .section__title {
+        text-align: center;
+      }
+    }
+  </style>
+</Layout>

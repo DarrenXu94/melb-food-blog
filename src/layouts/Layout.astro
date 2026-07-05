@@ -26,34 +26,24 @@ const year = new Date().getFullYear();
   </head>
   <body>
     <nav class="nav">
-      <div class="container nav__container">
-        <div class="nav__brand-container">
-          <a href="/" class="nav__brand">
-            <h1>TWO HUNGRY HIPPOS</h1>
-          </a>
+      <div class="border-bottom">
+        <div class="container nav__container">
+          <div class="nav__brand-container">
+            <a href="/" class="nav__brand">
+              <h1>TWO HUNGRY HIPPOS</h1>
+            </a>
+          </div>
         </div>
-
-        <!-- <div class="nav__search">
-          <form action="/search" method="GET" class="flex flex--gap-2">
-            <input
-              type="search"
-              name="q"
-              placeholder="Search restaurants..."
-              class="form-input"
-              aria-label="Search restaurants"
-            />
-            <button type="submit" class="btn btn--primary btn--sm"
-              >Search</button
-            >
-          </form>
-        </div> -->
-
-        <ul class="nav__links grid-border-top-left">
-          <li><a href="/" class="nav__link">Home</a></li>
-          <li><a href="/reviews" class="nav__link">Reviews</a></li>
-          <li><a href="/category" class="nav__link">Categories</a></li>
-          <li><a href="/search" class="nav__link">Search</a></li>
-        </ul>
+      </div>
+      <div class="border-bottom">
+        <div class="container">
+          <ul class="nav__links">
+            <li><a href="/" class="nav__link">Home</a></li>
+            <li><a href="/reviews" class="nav__link">Reviews</a></li>
+            <li><a href="/category" class="nav__link">Categories</a></li>
+            <li><a href="/search" class="nav__link">Search</a></li>
+          </ul>
+        </div>
       </div>
     </nav>
 
@@ -61,16 +51,16 @@ const year = new Date().getFullYear();
       <slot />
     </main>
 
-    <footer
-      style="background-color: var(--color-gray-100); padding: var(--spacing-8);"
-    >
-      <div class="container text-center">
-        <p class="text-gray-600">
-          &copy; {year}
-          We acknowledge the Traditional Owners of the land we work across, the Wurundjeri
-          Woi-wurrung and Bunurong / Boon Wurrung peoples of the Kulin and pay respect
-          to their Elders past and present.
-        </p>
+    <footer>
+      <div class="border-top">
+        <div class="container text-center p-8">
+          <p class="text-gray-600">
+            &copy; {year}
+            We acknowledge the Traditional Owners of the land we work across, the
+            Wurundjeri Woi-wurrung and Bunurong / Boon Wurrung peoples of the Kulin
+            and pay respect to their Elders past and present.
+          </p>
+        </div>
       </div>
     </footer>
   </body>
