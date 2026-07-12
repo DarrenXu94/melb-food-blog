@@ -48,9 +48,9 @@ const count = res.reviews.length;
   </div>
 
   <div class="page-content">
-    <div class="container">
-      <!-- Cuisine Categories -->
-      <section class="category-section">
+    <!-- Cuisine Categories -->
+    <div class="border-bottom">
+      <section class="category-section container">
         <div class="section-header">
           <h2 class="section-title">Cuisine Types</h2>
           <p class="section-subtitle">
@@ -71,9 +71,11 @@ const count = res.reviews.length;
           }
         </div>
       </section>
+    </div>
 
-      <!-- Location Categories -->
-      <section class="category-section">
+    <!-- Location Categories -->
+    <div class="border-bottom">
+      <section class="category-section container">
         <div class="section-header">
           <h2 class="section-title">Locations</h2>
           <p class="section-subtitle">
@@ -94,33 +96,33 @@ const count = res.reviews.length;
           }
         </div>
       </section>
-
-      <!-- Quick Stats -->
-      <section class="stats-section">
-        <div class="grid grid--3-cols">
-          <div class="stat-card">
-            <div class="stat-number">{cuisineCategories.length}</div>
-            <div class="stat-label">Cuisine Types</div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-number">{locationCategories.length}</div>
-            <div class="stat-label">Locations</div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-number">
-              {count}
-            </div>
-            <div class="stat-label">Total Reviews</div>
-          </div>
-        </div>
-      </section>
     </div>
+
+    <!-- Quick Stats -->
+    <section class="stats-section container">
+      <div class="grid grid--3-cols">
+        <div class="stat-card">
+          <div class="stat-number">{cuisineCategories.length}</div>
+          <div class="stat-label">Cuisine Types</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number">{locationCategories.length}</div>
+          <div class="stat-label">Locations</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number">
+            {count}
+          </div>
+          <div class="stat-label">Total Reviews</div>
+        </div>
+      </div>
+    </section>
   </div>
 
   <style>
     .page-header {
       background-color: var(--color-white);
-      padding: var(--spacing-12) 0;
+      padding-top: var(--spacing-12);
     }
 
     .page-title {
@@ -155,6 +157,7 @@ const count = res.reviews.length;
       font-weight: var(--font-weight-bold);
       margin-bottom: var(--spacing-4);
       color: var(--color-gray-900);
+      padding-top: var(--spacing-12);
     }
 
     .section-subtitle {
@@ -166,15 +169,12 @@ const count = res.reviews.length;
       margin-right: auto;
     }
 
-    .stats-section {
-      padding: var(--spacing-12);
-      margin-top: var(--spacing-16);
-    }
-
     .stat-card {
       text-align: center;
       padding: var(--spacing-8);
-      border: 1px solid var(--color-gray-900);
+      &:not(:last-child) {
+        border-right: 1px solid var(--color-gray-900);
+      }
     }
 
     .stat-number {

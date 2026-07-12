@@ -24,20 +24,11 @@ const cardClass = `card card--${size}`;
 ---
 
 <article class={cardClass}>
-  <!-- {
-    image && (
-      <div
-        class="card__image"
-        style="height: 200px; background-image: url('{image}'); background-size: cover; background-position: center;"
-      />
-    )
-  } -->
-
   <div class="card__body">
     <h3 class="card__title">
       {
         href ? (
-          <a href={href} class="text-gray-900" style="text-decoration: none;">
+          <a href={href} class="text-gray-900 card__link">
             {title}
           </a>
         ) : (
@@ -59,7 +50,7 @@ const cardClass = `card card--${size}`;
       {
         cuisine && (
           <div class="flex flex--gap-2">
-            <span class="text-sm text-gray-600">Cuisine:</span>
+            <span class="text-sm text-gray-600">Cuisine: </span>
             <span class="text-sm font-medium">
               {cuisine.map((cuisine) => capitalize(cuisine)).join(" / ")}
             </span>
@@ -70,7 +61,7 @@ const cardClass = `card card--${size}`;
       {
         location && (
           <div class="flex flex--gap-2">
-            <span class="text-sm text-gray-600">Location:</span>
+            <span class="text-sm text-gray-600">Location: </span>
             <span class="text-sm font-medium">{location}</span>
           </div>
         )
@@ -79,7 +70,7 @@ const cardClass = `card card--${size}`;
       {
         price && (
           <div class="flex flex--gap-2">
-            <span class="text-sm text-gray-600">Price:</span>
+            <span class="text-sm text-gray-600">Price: </span>
             <span class="text-sm font-medium">{price}</span>
           </div>
         )
@@ -88,7 +79,22 @@ const cardClass = `card card--${size}`;
   </div>
 </article>
 
-<style>
+<style lang="scss">
+  .card {
+    &__body {
+      position: relative;
+    }
+    &:hover {
+      background-color: var(--color-gray-100);
+    }
+
+    &__link::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+    }
+  }
   .card__image {
     border-radius: var(--radius-lg) var(--radius-lg) 0 0;
   }
