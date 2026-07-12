@@ -7,6 +7,7 @@
   --color-secondary-dark: #2980b9;
   --color-accent: #f39c12;
   --color-accent-dark: #e67e22;
+  --color-bg: #f4f3ea;
   
   // Neutral colors
   --color-white: #ffffff;
@@ -128,7 +129,7 @@ body {
   font-size: var(--font-size-base);
   font-weight: var(--font-weight-normal);
   color: var(--color-gray-800);
-  background-color: var(--color-white);
+  background-color: var(--color-bg);
   min-height: 100vh;
 }
 
@@ -358,18 +359,6 @@ a {
 
 // Card styles
 .card {
-  background-color: var(--color-white);
-  // border: 1px solid var(--color-gray-200);
-  // border: var(--custom-border);
-  // border-radius: var(--radius-lg);
-  // box-shadow: var(--shadow-sm);
-  // overflow: hidden;
-  // transition: box-shadow var(--transition-normal);
-  
-  // &:hover {
-  //   box-shadow: var(--shadow-md);
-  // }
-
   
   &__header {
     padding: var(--spacing-6);
@@ -448,9 +437,7 @@ a {
 
 // Navigation styles
 .nav {
-  background-color: var(--color-white);
-  // border-bottom: 1px solid var(--color-gray-200);
-  // box-shadow: var(--shadow-sm);
+  
   
   &__container {
     display: flex;
