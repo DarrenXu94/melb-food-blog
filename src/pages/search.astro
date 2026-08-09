@@ -71,13 +71,11 @@ const hasSearchCriteria = query || cuisine || location || price;
   </div>
 
   <div class="page-content">
-    <div class="border-bottom">
-      <div class="container">
-        <SearchComponent />
-      </div>
+    <div class="container">
+      <SearchComponent />
     </div>
 
-    <div class="container mt-6">
+    <div class="container mt-6 search-results">
       <!-- Search Results -->
       <section class="results-section">
         <div class="results-header">
@@ -90,6 +88,14 @@ const hasSearchCriteria = query || cuisine || location || price;
 </Layout>
 
 <style>
+  /* Hide .search-results when #resultsGrid has no content (uses :has selector) */
+  .search-results:has(#resultsGrid:empty) {
+    display: none;
+  }
+
+  #resultsGrid {
+    gap: var(--spacing-6);
+  }
   .page-header {
     padding: var(--spacing-12) 0;
   }
@@ -153,7 +159,6 @@ const hasSearchCriteria = query || cuisine || location || price;
 
   .results-header {
     margin-bottom: var(--spacing-8);
-    text-align: center;
   }
 
   .results-title {

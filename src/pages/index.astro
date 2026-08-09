@@ -53,7 +53,7 @@ const locations = Object.keys(reduceToCuisineAndLocation.locations)
   <section class="section">
     <div class="border-bottom">
       <h2 class="section__title border-bottom">Top Rated Reviews</h2>
-      <div class="grid grid--3-cols container">
+      <div class="grid grid--3-cols container mt-4 mb-4">
         {
           sortedTopRatedReviews.map((review) => (
             <ReviewCard {...review} size="large" />
